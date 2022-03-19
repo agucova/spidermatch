@@ -8,7 +8,6 @@ covered by local news in a certain country. Used for OSINT
 investigations in policing.
 
 -   Free software: GNU General Public License v3
--   Documentation: <https://spidermatch.readthedocs.io>.
 
 Features
 --------
