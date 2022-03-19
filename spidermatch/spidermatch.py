@@ -1,9 +1,9 @@
 import re
 import sys
+from typing import no_type_check
 
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-
 
 class WelcomeWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -19,11 +19,18 @@ class WelcomeWindow(QtWidgets.QMainWindow):
         token_matcher = r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
         self.api_token: str = self.api_token_input.text()
         if self.api_token and re.match(token_matcher, self.api_token):
+            self.panel = PanelWindow()
             self.close()
         else:
             self.api_token_input.setText("")
             self.api_token_input.setPlaceholderText("Token inválido")
             QtWidgets.QMessageBox.warning(self, "Error", "Token inválido")
+
+class PanelWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(PanelWindow, self).__init__()
+        uic.loadUi("windows/panel.ui", self)
+        self.show()
 
 
 if __name__ == "__main__":
