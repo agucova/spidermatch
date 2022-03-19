@@ -3,7 +3,7 @@
 name = "spidermatch"
 version = "0.1.0"
 homepage = "https://github.com/agucova/spidermatch"
-description = "Top-level package for SpiderMatch."
+description = "App for setting up automated spiders for incidents covered by local news in a certain country."
 authors = ["Agustín Covarrubias <agucova@uc.cl>"]
 readme = "README.md"
 classifiers=[
