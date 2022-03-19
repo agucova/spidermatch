@@ -1,12 +1,14 @@
-import sys, re
-from PyQt6 import QtWidgets
-from PyQt6 import uic
+import re
+import sys
+
+from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
+
 
 class WelcomeWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(WelcomeWindow, self).__init__()
-        uic.loadUi('windows/welcome.ui', self)
+        uic.loadUi("windows/welcome.ui", self)
         # Connect the save button to the save_token method
         self.api_save_button.clicked.connect(self.save_token)
         # Set input enter to submit button
@@ -30,7 +32,7 @@ if __name__ == "__main__":
     window = WelcomeWindow()
 
     # setup stylesheet
-    apply_stylesheet(app, theme='dark_teal.xml')
+    apply_stylesheet(app, theme="dark_teal.xml")
 
     # run
     window.show()

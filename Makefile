@@ -47,10 +47,11 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 format:
-	@python -m black .
+	poetry run black .
+	poetry run isort .
 
 lint: format ## check style with flake8
-	@python -m flake8 spidermatch/ tests/
+	poetry run flake8 spidermatch/ tests/
 
 test: ## run tests quickly with the default Python
 	pytest
@@ -66,7 +67,6 @@ release: dist ## package and upload a release
 
 dist: clean ## builds source and wheel package
 	poetry build
-	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
