@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 import re
 import sys
-from typing import no_type_check
+import csv
 
 from PyQt6 import QtWidgets, uic
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from qt_material import apply_stylesheet
 
 class WelcomeWindow(QtWidgets.QMainWindow):
@@ -29,8 +33,86 @@ class WelcomeWindow(QtWidgets.QMainWindow):
 class PanelWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(PanelWindow, self).__init__()
+
+        # Site and rule list
+        # TODO: Solve undefinition error
+        self._site_list: list[str] = []
+        self._rule_list: list[str] = []
+
+        # Load the UI
         uic.loadUi("windows/panel.ui", self)
+
+        # Models
+        self.site_list_model = QStandardItemModel(self.site_list_view)
+        self.rule_list_model = QStandardItemModel(self.rule_list_view)
+        # self.site_list_view.setModel(self.site_list_model)
+        # self.rule_list_view.setModel(self.rule_list_model)
+
+        # Site and rule list signals
+        self.site_import_button.clicked.connect(self.import_sites)
+        self.site_export_button.clicked.connect(self.export_sites)
+        self.rule_import_button.clicked.connect(self.import_rules)
+        self.rule_export_button.clicked.connect(self.export_rules)
+
+
         self.show()
+
+    @property
+    def site_list(self):
+        return self._site_list
+
+    @site_list.setter
+    def site_list(self, site_list: list[str]):
+        self._site_list = site_list
+        self.update_site_list()
+
+    @property
+    def rule_list(self):
+        return self._rule_list
+
+    @rule_list.setter
+    def rule_list(self, rule_list: list[str]):
+        self._rule_list = rule_list
+        self.update_rule_list()
+
+    def update_site_list(self):
+        self.site_list_model.clear()
+        for site in self.site_list:
+            self.site_list_model.appendRow(QStandardItem(site))
+
+    def update_rule_list(self):
+        self.rule_list_model.clear()
+        for rule in self.rule_list:
+            self.rule_list_model.appendRow(QStandardItem(rule))
+
+    def import_sites(self):
+        file_path, check = QtWidgets.QFileDialog.getOpenFileName(self, "Importar sitios", "", "CSV (*.csv)")
+        with open(file_path, "r") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                # TODO: Define input format
+                self.site_list.append(row[0])
+
+    def export_sites(self):
+        file_path, check = QtWidgets.QFileDialog.getSaveFileName(self, "Exportar sitios", "", "CSV (*.csv)")
+        with open(file_path, "w") as f:
+            writer = csv.writer(f)
+            writer.writerows(self.site_list)
+
+    def import_rules(self):
+        file_path, check = QtWidgets.QFileDialog.getOpenFileName(self, "Importar reglas", "", "CSV (*.csv)")
+        with open(file_path, "r") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                self.rule_list.append(row[0])
+
+    def export_rules(self):
+        file_path, check = QtWidgets.QFileDialog.getSaveFileName(self, "Exportar reglas", "", "CSV (*.csv)")
+        with open(file_path, "w") as f:
+            writer = csv.writer(f)
+            writer.writerows(self.rule_list)
+
+
 
 
 if __name__ == "__main__":
