@@ -3,10 +3,7 @@ from __future__ import annotations
 import re
 import sys
 import csv
-
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from qt_material import apply_stylesheet
 
 class WelcomeWindow(QtWidgets.QMainWindow):
@@ -43,8 +40,8 @@ class PanelWindow(QtWidgets.QMainWindow):
         uic.loadUi("windows/panel.ui", self)
 
         # Models
-        self.site_list_model = QStandardItemModel(self.site_list_view)
-        self.rule_list_model = QStandardItemModel(self.rule_list_view)
+        # self.site_list_model = QStandardItemModel(self.site_list_view)
+        # self.rule_list_model = QStandardItemModel(self.rule_list_view)
         # self.site_list_view.setModel(self.site_list_model)
         # self.rule_list_view.setModel(self.rule_list_model)
 
@@ -76,22 +73,24 @@ class PanelWindow(QtWidgets.QMainWindow):
         self.update_rule_list()
 
     def update_site_list(self):
-        self.site_list_model.clear()
-        for site in self.site_list:
-            self.site_list_model.appendRow(QStandardItem(site))
+        self.site_list_view.clear()
+        self.site_list_view.addItems(self.site_list)
+        self.site_list_view.update()
 
     def update_rule_list(self):
-        self.rule_list_model.clear()
-        for rule in self.rule_list:
-            self.rule_list_model.appendRow(QStandardItem(rule))
+        self.rule_list_view.clear()
+        self.rule_list_view.addItems(self.site_list)
+        self.rule_list_view.update()
 
     def import_sites(self):
+        # TODO: Add dialogue validation
         file_path, check = QtWidgets.QFileDialog.getOpenFileName(self, "Importar sitios", "", "CSV (*.csv)")
         with open(file_path, "r") as f:
             reader = csv.reader(f)
             for row in reader:
                 # TODO: Define input format
                 self.site_list.append(row[0])
+        self.update_site_list()
 
     def export_sites(self):
         file_path, check = QtWidgets.QFileDialog.getSaveFileName(self, "Exportar sitios", "", "CSV (*.csv)")
@@ -105,6 +104,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             reader = csv.reader(f)
             for row in reader:
                 self.rule_list.append(row[0])
+        self.update_rule_list()
 
     def export_rules(self):
         file_path, check = QtWidgets.QFileDialog.getSaveFileName(self, "Exportar reglas", "", "CSV (*.csv)")
