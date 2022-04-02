@@ -69,15 +69,104 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="generalTab">
+       <widget class="QWidget" name="searchTab">
         <attribute name="title">
-         <string>Tab 1</string>
+         <string>Busqueda</string>
         </attribute>
-       </widget>
-       <widget class="QWidget" name="generalTab2">
-        <attribute name="title">
-         <string>Tab 2</string>
-        </attribute>
+        <widget class="QWidget" name="formLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>751</width>
+           <height>291</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Pais:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="country_input">
+            <property name="text">
+             <string>CL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Dominio:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEdit">
+            <property name="text">
+             <string>google.cl</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Lenguaje:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="language_input">
+            <property name="text">
+             <string>es-419</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Limite de Resultados</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="limit_input">
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Granularidad (meses):</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="granularity_input">
+            <property name="suffix">
+             <string> mes(es)</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>600</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QPushButton" name="start_search_button">
@@ -219,6 +308,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="rule_edit_button">
+            <property name="text">
+             <string>Editar</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="rule_delete_button">
             <property name="text">
              <string>Eliminar</string>
@@ -240,7 +336,7 @@
        </sizepolicy>
       </property>
       <property name="title">
-       <string>Registro / Log</string>
+       <string>Resultados</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

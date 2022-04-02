@@ -15,12 +15,52 @@
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Tab 1</source>
+      <source>Busqueda</source>
       <translation type="unfinished" />
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Tab 2</source>
+      <source>Pais:</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>CL</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>Dominio:</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>google.cl</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>Lenguaje:</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>es-419</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>Limite de Resultados</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>Granularidad (meses):</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source> mes(es)</source>
       <translation type="unfinished" />
     </message>
     <message>
@@ -65,7 +105,12 @@
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Registro / Log</source>
+      <source>Editar</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../../spidermatch/windows/panel.ui" line="0" />
+      <source>Resultados</source>
       <translation type="unfinished" />
     </message>
     <message>
