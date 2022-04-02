@@ -105,7 +105,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="domain_input">
             <property name="text">
              <string>google.cl</string>
             </property>
@@ -139,6 +139,9 @@
             </property>
             <property name="maximum">
              <number>100</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
             </property>
            </widget>
           </item>
@@ -359,21 +362,7 @@
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QScrollArea" name="log_area">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>777</width>
-             <height>379</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
+         <widget class="QListWidget" name="hits_view"/>
         </item>
        </layout>
       </widget>

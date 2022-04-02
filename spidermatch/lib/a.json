@@ -1,0 +1,194 @@
+{
+    "query": {
+        "q": "hola",
+        "hl": "es",
+        "gl": "CL",
+        "num": "10",
+        "url": "https://www.google.com/search?q=hola&oq=hola&hl=es&gl=CL&sourceid=chrome&ie=UTF-8",
+    },
+    "knowledge_graph": [
+        {
+            "title": "¡Hola!",
+            "subtitle": "Revista",
+            "description": "Descripción¡Hola! es una revista semanal en español especializada en noticias de celebridades, publicada en Madrid, España y en otros 15 países, con ediciones locales en Argentina, Brasil, Canadá, Chile, Colombia, ... Wikipedia",
+            "publisher": "Eduardo Sánchez Pérez",
+            "appear_date": "2 de septiembre de 1944",
+            "cost": "2,20 €",
+            "compani": "Hola S.L",
+            "frecuenci": "Semanal",
+            "fundacion": "1944",
+            "issn": "0214-3895",
+        }
+    ],
+    "organic": [
+        {
+            "position": 1,
+            "title": "HOLA.com, diario de actualidad, moda y belleza",
+            "url": "https://www.hola.com/",
+            "destination": "https://www.hola.com",
+            "description": "Número 1 en actualidad y tendencias de moda, belleza y estilo de vida. Noticias diarias sobre las estrellas de cine, la música, tendencias de moda,\xa0...",
+            "isAmp": False,
+            "sitelinks": [
+                {
+                    "title": "Casas Reales",
+                    "description": "Reino Unido\xa0- Casa Real Española\xa0- Bélgica\xa0- ...",
+                    "url": "https://www.hola.com/realeza/",
+                },
+                {
+                    "title": "Actualidad",
+                    "description": "La actualidad más completa para estar informada diariamente de ...",
+                    "url": "https://www.hola.com/actualidad/",
+                },
+                {
+                    "title": "HOLA.com, tu revista en internet",
+                    "description": "Actualidad\xa0- Realeza\xa0- Revistas\xa0- Moda\xa0- Casas\xa0- Hemeroteca",
+                    "url": "https://www.hola.com/plus/",
+                },
+                {
+                    "title": "Noticias",
+                    "description": "Las últimas tendencias en moda y toda la información sobre las ...",
+                    "url": "https://www.hola.com/moda/actualidad/",
+                },
+            ],
+        },
+        {
+            "position": 2,
+            "isCarousel": True,
+            "isVertical": False,
+            "news": [
+                {
+                    "title": "Los duques de Cambridge invitados sorpresa de Tom Cruise",
+                    "url": "https://www.hola.com/realeza/casa_inglesa/20220402207378/duques-cambridge-tom-cruise-cine/",
+                    "parsed": {
+                        "text": "Los duques de Cambridge invitados sorpresa de Tom Cruise",
+                        "source": None,
+                        "date": "hace 6 horas",
+                    },
+                },
+                {
+                    "title": "Los duques de Cambridge contratan a la exjefa de los Bafta",
+                    "url": "https://www.hola.com/realeza/casa_inglesa/20220401207319/kate-middleton-principe-guillermo-nueva-contratacion-bafta/",
+                    "parsed": {
+                        "text": "Los duques de Cambridge contratan a la exjefa de los Bafta",
+                        "source": None,
+                        "date": "hace 1 día",
+                    },
+                },
+                {
+                    "title": "Sandra Bullock arrasa en Londres con melena salvaje y pestañas XXL",
+                    "url": "https://www.hola.com/belleza/actualidad/galeria/20220401207310/sandra-bullock-pelo-rizado-pestanas-postizas/1/",
+                    "parsed": {
+                        "text": "Sandra Bullock arrasa en Londres con melena salvaje y pestañas XXL",
+                        "source": "Hola",
+                        "date": "hace 1 día",
+                    },
+                },
+            ],
+        },
+        {
+            "position": 3,
+            "title": "¡Hola! - Wikipedia, la enciclopedia libre",
+            "url": "https://es.wikipedia.org/wiki/%C2%A1Hola!",
+            "destination": "https://es.wikipedia.org › wiki › ¡Hola!",
+            "description": "¡Hola! es una revista semanal en español especializada en noticias de celebridades, publicada en Madrid, España y en otros 15 países, con ediciones locales\xa0...",
+            "isAmp": False,
+        },
+        {
+            "position": 4,
+            "questions": [
+                {"question": "¿Quién creó Hola?"},
+                {"question": "¿Qué es Hola México?"},
+                {"question": "¿Cuál es el precio de la revista Hola?"},
+                {"question": "¿Qué es la revista Hola?"},
+            ],
+        },
+        {
+            "position": 5,
+            "title": "Revista Hola - Últimas noticias y portada de esta semana",
+            "url": "https://www.20minutos.es/minuteca/revista-hola/",
+            "destination": "https://www.20minutos.es › minuteca › revista-hola",
+            "description": "¡Hola! es una revista del corazón española de publicación semanal. Fue fundada por Antonio Sánchez Gómez (1911-1984). La revista es una publicación tanto\xa0...",
+            "isAmp": False,
+        },
+        {
+            "position": 6,
+            "title": "",
+            "url": "https://twitter.com/hola?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+        },
+        {
+            "position": 7,
+            "title": "Noticias de Revista ¡HOLA! - La Nación",
+            "url": "https://www.lanacion.com.ar/revista-hola/",
+            "destination": "https://www.lanacion.com.ar › revista-hola",
+            "description": "Últimas Noticias de Revista ¡HOLA!: Bill Gates y la segunda cita en público que tuvo con una mujer de la que se desconoce su nombre, Juliana y Máximo López\xa0...",
+            "isAmp": False,
+        },
+        {
+            "position": 8,
+            "title": "Hola en EL PAÍS",
+            "url": "https://elpais.com/noticias/hola/",
+            "destination": "https://elpais.com › noticias › hola",
+            "description": "Todas las noticias sobre Hola publicadas en EL PAÍS. Información, novedades y última hora sobre Hola.",
+            "isAmp": False,
+        },
+        {
+            "position": 9,
+            "title": "Revista ¡HOLA! (@holacom) • Instagram photos and videos",
+            "url": "https://www.instagram.com/holacom/?hl=es",
+            "destination": "https://www.instagram.com › holacom",
+            "description": "2m Followers, 2714 Following, 15.9k Posts - See Instagram photos and videos from Revista ¡HOLA! (@holacom)",
+            "isAmp": False,
+        },
+    ],
+    "related_searches": [
+        {
+            "title": "hola argentina",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+Argentina&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhYEAE",
+        },
+        {
+            "title": "hola significado",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+significado&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhUEAE",
+        },
+        {
+            "title": "hola méxico",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+M%C3%A9xico&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhTEAE",
+        },
+        {
+            "title": "hola vpn",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+VPN&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhREAE",
+        },
+        {
+            "title": "hola en inglés",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+en+ingl%C3%A9s&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhPEAE",
+        },
+        {
+            "title": "hola como estás",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+como+est%C3%A1s&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhOEAE",
+        },
+        {
+            "title": "revista hola españa esta semana",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Revista+HOLA+Espa%C3%B1a+esta+semana&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhNEAE",
+        },
+        {
+            "title": "hola w",
+            "url": "https://www.google.com/search?hl=es-419&gl=cl&q=Hola+w&sa=X&ved=2ahUKEwjDjob0h_b2AhWfLLkGHZ-LBF8Q1QJ6BAhJEAE",
+        },
+    ],
+    "number_of_results": 2420000000,
+    "pagination": {
+        "current_page": 1,
+        "next_page": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=10",
+        "previous_page": None,
+        "pages": {
+            "2": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=10",
+            "3": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=20",
+            "4": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=30",
+            "5": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=40",
+            "6": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=50",
+            "7": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=60",
+            "8": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=70",
+            "9": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=80",
+            "10": "https://app.zenserp.com/api/v2/search?q=hola&hl=es&gl=CL&num=10&start=90",
+        },
+    },
+}

@@ -1,12 +1,15 @@
 from __future__ import annotations
 from datetime import datetime, timedelta
+from math import floor
 
 import re
 import sys
 import csv
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from spidermatch.lib.entities import Rule, SearchParameters
+from spidermatch.lib.entities import Hit, Rule, SearchParameters
+from spidermatch.lib.search import search_rules
+from zenserp import Client
 
 
 class WelcomeWindow(QtWidgets.QMainWindow):
@@ -23,7 +26,7 @@ class WelcomeWindow(QtWidgets.QMainWindow):
         token_matcher = r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
         self.api_token: str = self.api_token_input.text()
         if self.api_token and re.match(token_matcher, self.api_token):
-            self.panel = PanelWindow()
+            self.panel = PanelWindow(self.api_token)
             self.close()
         else:
             self.api_token_input.setText("")
@@ -32,15 +35,19 @@ class WelcomeWindow(QtWidgets.QMainWindow):
 
 
 class PanelWindow(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, api_token: str):
         super(PanelWindow, self).__init__()
 
         # Site and rule list
         self.site_list: list[str] = []
         self.rule_list: list[Rule] = []
+        self.hits_list: list[Hit] = []
 
         # Load the UI
         uic.loadUi("windows/panel.ui", self)
+
+        # Store API Token
+        self.api_token = api_token
 
         # Site and rule list signals
         self.site_import_button.clicked.connect(self.import_sites)
@@ -72,6 +79,10 @@ class PanelWindow(QtWidgets.QMainWindow):
         self.rule_list_view.clear()
         self.rule_list_view.addItems(str(rule) for rule in self.rule_list)
 
+    def update_hits_list(self):
+        self.hits_list_view.clear()
+        self.hits_list_view.addItems(str(hit) for hit in self.hits_list)
+
     def import_sites(self):
         # TODO: Add dialogue validation
         file_path, check = QtWidgets.QFileDialog.getOpenFileName(
@@ -80,14 +91,20 @@ class PanelWindow(QtWidgets.QMainWindow):
         if check:
             with open(file_path, "r") as f:
                 # Sniff CSV patterns
-                sniffer = csv.Sniffer()
-                dialect = sniffer.sniff(f.read(1024))
-                f.seek(0)
-                has_header = sniffer.has_header(f.read(1024))
-                f.seek(0)
+                try:
+                    sniffer = csv.Sniffer()
+                    dialect = sniffer.sniff(f.read(1024))
+                    f.seek(0)
+                    has_header = sniffer.has_header(f.read(1024))
+                    f.seek(0)
 
-                # Read the actual CSV
-                reader = csv.reader(f, dialect)
+                    # Read the actual CSV
+                    reader = csv.reader(f, dialect)
+                except csv.Error:
+                    f.seek(0)
+                    reader = csv.reader(f)
+                    has_header = True
+
                 errors = 0
                 for i, row in enumerate(reader):
                     if i == 0 and has_header:
@@ -153,15 +170,21 @@ class PanelWindow(QtWidgets.QMainWindow):
         )
         if check:
             with open(file_path, "r") as f:
-                # Sniff CSV patterns
-                sniffer = csv.Sniffer()
-                dialect = sniffer.sniff(f.read(1024))
-                f.seek(0)
-                has_header = sniffer.has_header(f.read(1024))
-                f.seek(0)
+                try:
+                    # Sniff CSV patterns
+                    sniffer = csv.Sniffer()
+                    dialect = sniffer.sniff(f.read(1024))
+                    f.seek(0)
+                    has_header = sniffer.has_header(f.read(1024))
+                    f.seek(0)
 
-                # Read the actual CSV
-                reader = csv.reader(f, dialect)
+                    # Read the actual CSV
+                    reader = csv.reader(f, dialect)
+                except csv.Error:
+                    f.seek(0)
+                    reader = csv.reader(f)
+                    has_header = True
+
                 for i, row in enumerate(reader):
                     if i == 0 and has_header:
                         continue
@@ -248,7 +271,23 @@ class PanelWindow(QtWidgets.QMainWindow):
                 self.site_list,
             )
             rules = self.rule_list
+            client = Client(self.api_token)
+            for i, hit in enumerate(search_rules(client, rules, params)):
+                self.hits_list.append(hit)
+                self.update_hits_list()
+                self.progress_bar.setValue(floor((i / len(rules)) * 100))
 
+    def export_hits(self):
+        file_path, check = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Exportar resultados", "", "CSV (*.csv)"
+        )
+        if check:
+            with open(file_path, "w") as f:
+                writer = csv.writer(f)
+                writer.writerow(
+                    ("title", "url", "position", "destination", "description", "date")
+                )
+                writer.writerows(hit.csv_row() for hit in self.hits_list)
 
 
 class RuleDialog(QtWidgets.QDialog):
