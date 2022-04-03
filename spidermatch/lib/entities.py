@@ -80,15 +80,19 @@ class SearchParameters:
         from_date = from_date if from_date else rule.from_date
         to_date = to_date if to_date else rule.to_date
 
+        query = rule.query
+
+        if self.sites:
+            query += " site:" + " OR site:".join(self.sites)
+
         params = (
-            ("q", rule.query),
+            ("q", query),
             ("hl", self.language),
             ("gl", self.country),
             ("num", self.limit),
             ("tbs", generate_tbs(from_date, to_date))
         )
-        if self.sites:
-            params += (("site", "site:" + " site:".join(self.sites)),)
+
         return params
 
 
@@ -104,7 +108,7 @@ class Hit:
     date: str | None
 
     def __str__(self):
-        return f"{self.title} ({self.description[:30] + ('...' if len(self.description) > 30 else '')})"
+        return f"{self.title} ({self.description[:60] + ('...' if len(self.description) > 60 else '')})"
 
     def csv_row(self):
         return (
@@ -124,4 +128,4 @@ class RuleResult:
     """
 
     rule: Rule
-    results: list[Hit]
+    hits: list[Hit]

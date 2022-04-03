@@ -50,7 +50,7 @@
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Limite de Resultados</source>
+      <source>Limite de Resultados (profundidad):</source>
       <translation type="unfinished" />
     </message>
     <message>

@@ -7,8 +7,8 @@ import sys
 import csv
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from spidermatch.lib.entities import Hit, Rule, SearchParameters
-from spidermatch.lib.search import search_rules
+from spidermatch.lib.entities import Hit, Rule, RuleResult, SearchParameters
+from spidermatch.worker import SearchWorker
 from zenserp import Client
 
 
@@ -41,7 +41,7 @@ class PanelWindow(QtWidgets.QMainWindow):
         # Site and rule list
         self.site_list: list[str] = []
         self.rule_list: list[Rule] = []
-        self.hits_list: list[Hit] = []
+        self.rule_result_list: list[RuleResult] = []
 
         # Load the UI
         uic.loadUi("windows/panel.ui", self)
@@ -64,6 +64,9 @@ class PanelWindow(QtWidgets.QMainWindow):
         # Search buttons
         self.start_search_button.clicked.connect(self.start_search)
 
+        # Results list
+        self.export_results_button.clicked.connect(self.export_results)
+
         # Domain validation regex
         self.domain_validator = re.compile(
             r"\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b$"
@@ -81,7 +84,8 @@ class PanelWindow(QtWidgets.QMainWindow):
 
     def update_hits_list(self):
         self.hits_list_view.clear()
-        self.hits_list_view.addItems(str(hit) for hit in self.hits_list)
+        for rule_result in self.rule_result_list:
+            self.hits_list_view.addItems(str(hit) for hit in rule_result.hits)
 
     def import_sites(self):
         # TODO: Add dialogue validation
@@ -260,8 +264,19 @@ class PanelWindow(QtWidgets.QMainWindow):
             return False
         return True
 
+    def receive_progress(self, progress: int, result: RuleResult):
+        self.progress_bar.setValue(progress)
+        if result is not None:
+            self.rule_result_list.append(result)
+            self.update_hits_list()
+
+    def raise_error(self, error: str):
+        QtWidgets.QMessageBox.warning(self, "API Error", error)
+
     def start_search(self):
         if self.validate_config():
+            self.progress_bar.setValue(0)
+            client = Client(self.api_token)
             params = SearchParameters(
                 self.country_input.text(),
                 self.language_input.text(),
@@ -270,14 +285,14 @@ class PanelWindow(QtWidgets.QMainWindow):
                 timedelta(days=self.granularity_input.value() * 30),
                 self.site_list,
             )
-            rules = self.rule_list
-            client = Client(self.api_token)
-            for i, hit in enumerate(search_rules(client, rules, params)):
-                self.hits_list.append(hit)
-                self.update_hits_list()
-                self.progress_bar.setValue(floor((i / len(rules)) * 100))
+            self.search_thread = SearchWorker(client, params, self.rule_list)
+            self.search_thread.progress.connect(self.receive_progress)
+            self.search_thread.finished.connect(self.search_thread.deleteLater)
+            self.search_thread.error.connect(self.raise_error)
 
-    def export_hits(self):
+            self.search_thread.start()
+
+    def export_results(self):
         file_path, check = QtWidgets.QFileDialog.getSaveFileName(
             self, "Exportar resultados", "", "CSV (*.csv)"
         )
@@ -285,9 +300,13 @@ class PanelWindow(QtWidgets.QMainWindow):
             with open(file_path, "w") as f:
                 writer = csv.writer(f)
                 writer.writerow(
-                    ("title", "url", "position", "destination", "description", "date")
+                    ("rule_name", "title", "url", "position", "destination", "description", "date")
                 )
-                writer.writerows(hit.csv_row() for hit in self.hits_list)
+                for rule_result in self.rule_result_list:
+                    name = rule_result.rule.name
+                    writer.writerows(
+                        (name,) + hit.csv_row() for hit in rule_result.hits
+                    )
 
 
 class RuleDialog(QtWidgets.QDialog):

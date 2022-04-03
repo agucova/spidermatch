@@ -128,7 +128,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Limite de Resultados</string>
+             <string>Limite de Resultados (profundidad):</string>
             </property>
            </widget>
           </item>
@@ -355,14 +355,14 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="export_results_button">
           <property name="text">
            <string>Exportar</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QListWidget" name="hits_view"/>
+         <widget class="QListWidget" name="hits_list_view"/>
         </item>
        </layout>
       </widget>
