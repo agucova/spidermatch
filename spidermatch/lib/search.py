@@ -1,5 +1,4 @@
 from __future__ import annotations
-from multiprocessing.sharedctypes import Value
 import zenserp
 from spidermatch.lib.entities import (
     Rule,
