@@ -67,6 +67,7 @@ class PanelWindow(QtWidgets.QMainWindow):
         self.export_results_button.clicked.connect(self.export_results)
 
         # Domain validation regex
+        # From the Regular Expressions Cookbook, 2nd Edition by Jan Goyvaerts, Steven Levithan
         self.domain_validator = re.compile(
             r"\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b$"
         )
@@ -146,7 +147,6 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Agregar sitio", "Dominio:"
         )
         if ok:
-            # From the Regular Expressions Cookbook, 2nd Edition by Jan Goyvaerts, Steven Levithan
             if self.domain_validator.match(site_name):
                 self.site_list.append(site_name)
             else:
