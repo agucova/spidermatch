@@ -55,9 +55,9 @@ class Rule:
         )
 
 
-class SearchParameters:
+class SearchConfig:
     """
-    Set of parameters used for searching incidents
+    General configuration parameters used for searching incidents
     """
 
     def __init__(
@@ -104,7 +104,7 @@ class SearchParameters:
 @dataclass(frozen=True)
 class SearchQuery:
     rule: Rule
-    params: SearchParameters
+    config: SearchConfig
     from_date: datetime | None = None
     to_date: datetime | None = None
 

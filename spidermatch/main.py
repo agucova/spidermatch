@@ -6,7 +6,7 @@ import sys
 import csv
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from spidermatch.lib.entities import Rule, RuleResult, SearchParameters
+from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from spidermatch.worker import SearchWorker
 from zenserp import Client
 
@@ -289,7 +289,7 @@ class PanelWindow(QtWidgets.QMainWindow):
         if self.validate_config():
             client = Client(self.api_token)
             granularity = timedelta(days=self.granularity_input.value() * 30)
-            params = SearchParameters(
+            search_config = SearchConfig(
                 self.country_input.text(),
                 self.language_input.text(),
                 self.domain_input.text(),
@@ -297,7 +297,7 @@ class PanelWindow(QtWidgets.QMainWindow):
                 granularity,
                 self.site_list,
             )
-            self.search_thread = SearchWorker(client, params, self.rule_list)
+            self.search_thread = SearchWorker(client, search_config, self.rule_list)
             self.search_thread.progress.connect(self.receive_search_progress)
             self.search_thread.configure_progress_bar.connect(
                 self.configure_progress_bar

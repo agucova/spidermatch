@@ -1,5 +1,5 @@
 from spidermatch.lib.search import generate_search_plan, search
-from spidermatch.lib.entities import Rule, RuleResult, SearchParameters
+from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from PyQt6.QtCore import QThread, pyqtSignal
 from math import floor
 from zenserp import Client
@@ -10,10 +10,10 @@ class SearchWorker(QThread):
     progress = pyqtSignal(int, RuleResult)
     error = pyqtSignal(str)
 
-    def __init__(self, client: Client, params: SearchParameters, rules: list[Rule]):
+    def __init__(self, client: Client, config: SearchConfig, rules: list[Rule]):
         super().__init__()
         self.client = client
-        self.params = params
+        self.params = config
         self.rules = rules
 
     def run(self):

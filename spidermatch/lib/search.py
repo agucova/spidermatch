@@ -3,7 +3,7 @@ import zenserp
 from spidermatch.lib.entities import (
     Rule,
     RuleResult,
-    SearchParameters,
+    SearchConfig,
     Hit,
     SearchQuery,
 )
@@ -12,21 +12,21 @@ from datetime import datetime
 
 
 def generate_search_plan(
-    rules: list[Rule], params: SearchParameters
+    rules: list[Rule], config: SearchConfig
 ) -> list[SearchQuery]:
-    """Generate the list of queries needed to be run for a given set of rules and params"""
+    """Generate the list of queries needed to be run for a given set of rules and a config."""
     search_plan: list[SearchQuery] = []
     for rule in rules:
         if rule.from_date and rule.to_date:
             assert rule.time_length
-            if rule.time_length > params.granularity:
+            if rule.time_length > config.granularity:
                 windows = calculate_windows(
-                    rule.from_date, rule.to_date, params.granularity
+                    rule.from_date, rule.to_date, config.granularity
                 )
                 for from_date, to_date in windows:
-                    search_plan.append(SearchQuery(rule, params, from_date, to_date))
+                    search_plan.append(SearchQuery(rule, config, from_date, to_date))
             else:
-                search_plan.append(SearchQuery(rule, params, None, None))
+                search_plan.append(SearchQuery(rule, config, None, None))
         else:
             raise (
                 NotImplementedError("Rule must have from_date and to_date. Not implemented yet.")
@@ -38,7 +38,7 @@ def generate_search_plan(
 def _search(
     client: zenserp.Client,
     rule: Rule,
-    params: SearchParameters,
+    params: SearchConfig,
     from_date: datetime | None = None,
     to_date: datetime | None = None,
 ):
@@ -90,7 +90,7 @@ def search(query: SearchQuery, client: zenserp.Client) -> RuleResult:
     """
     Search using a SearchQuery object. High-level interface.
     """
-    hits = _search(client, query.rule, query.params, query.from_date, query.to_date)
+    hits = _search(client, query.rule, query.config, query.from_date, query.to_date)
     return RuleResult(query.rule, hits)
 
 
