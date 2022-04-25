@@ -14,6 +14,7 @@ from beartype import beartype
 
 class WelcomeWindow(QtWidgets.QMainWindow):
     """Welcome window that asks for the API key."""
+
     def __init__(self):
         super(WelcomeWindow, self).__init__()
         uic.loadUi("windows/welcome.ui", self)
@@ -39,6 +40,7 @@ class WelcomeWindow(QtWidgets.QMainWindow):
 
 class PanelWindow(QtWidgets.QMainWindow):
     """Main dashboard for the app."""
+
     def __init__(self, api_token: str):
         super(PanelWindow, self).__init__()
 
@@ -339,6 +341,7 @@ class PanelWindow(QtWidgets.QMainWindow):
 
 class RuleDialog(QtWidgets.QDialog):
     """Dialog for adding and editing rules."""
+
     def __init__(self, parent=None):
         super(RuleDialog, self).__init__(parent)
 

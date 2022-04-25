@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
+from beartype import beartype
 
 
-def generate_tbs(from_date: datetime | None, to_date: datetime | None):
+@beartype
+def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
     tbs = ""
     if from_date or to_date:
         tbs = "cdr:1"
@@ -12,7 +14,10 @@ def generate_tbs(from_date: datetime | None, to_date: datetime | None):
     return tbs
 
 
-def calculate_windows(from_date: datetime, to_date: datetime, granularity: timedelta):
+@beartype
+def calculate_windows(
+    from_date: datetime, to_date: datetime, granularity: timedelta
+) -> list[tuple[datetime, datetime]]:
     """Divide a time period into windows of a given granularity."""
     window_size = granularity.days
     windows = []
@@ -26,3 +31,15 @@ def calculate_windows(from_date: datetime, to_date: datetime, granularity: timed
         windows[-1] = (windows[-1][0], to_date)
 
     return windows
+
+
+def split(iter, n_parts: int):
+    """Splits a sequence into n parts"""
+    k, m = divmod(len(iter), n_parts)
+    return (
+        iter[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(n_parts)
+    )
+
+def count_terms(text: str):
+    """Count the number of words in a given string."""
+    return len(text.strip().split(" OR "))

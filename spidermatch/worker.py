@@ -5,13 +5,14 @@ from zenserp import Client
 
 from beartype import beartype
 
+
 class SearchWorker(QThread):
     configure_progress_bar = pyqtSignal(int, int)
     progress = pyqtSignal(int, RuleResult)
     error = pyqtSignal(str)
 
     @beartype
-    def __init__(self, client: Client, config   : SearchConfig, rules: list[Rule]):
+    def __init__(self, client: Client, config: SearchConfig, rules: list[Rule]):
         super().__init__()
         self.client = client
         self.params = config
