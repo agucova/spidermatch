@@ -6,12 +6,13 @@ import sys
 import csv
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from spidermatch.lib.entities import Hit, Rule, RuleResult, SearchParameters
+from spidermatch.lib.entities import Rule, RuleResult, SearchParameters
 from spidermatch.worker import SearchWorker
 from zenserp import Client
 
 
 class WelcomeWindow(QtWidgets.QMainWindow):
+    """Welcome window that asks for the API key."""
     def __init__(self):
         super(WelcomeWindow, self).__init__()
         uic.loadUi("windows/welcome.ui", self)
@@ -22,6 +23,8 @@ class WelcomeWindow(QtWidgets.QMainWindow):
         self.show()
 
     def save_token(self):
+        """Checks if the token is valid and saves it."""
+        # Regular expression for Zenserp tokens.
         token_matcher = r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
         self.api_token: str = self.api_token_input.text()
         if self.api_token and re.match(token_matcher, self.api_token):
@@ -34,6 +37,7 @@ class WelcomeWindow(QtWidgets.QMainWindow):
 
 
 class PanelWindow(QtWidgets.QMainWindow):
+    """Main dashboard for the app."""
     def __init__(self, api_token: str):
         super(PanelWindow, self).__init__()
 
@@ -264,29 +268,33 @@ class PanelWindow(QtWidgets.QMainWindow):
         return True
 
     def configure_progress_bar(self, minimum: int, maximum: int):
+        """This allows resetting the progress bar and setting its maximum."""
         self.progress_bar.setMinimum(minimum)
         self.progress_bar.setMaximum(maximum)
         self.progress_bar.setValue(minimum)
 
     def receive_search_progress(self, progress: int, result: RuleResult):
+        """Receiver for progress signals from the search worker. Updates the progress bar."""
         self.progress_bar.setValue(progress)
         if result is not None:
             self.rule_result_list.append(result)
             self.update_hits_list()
 
     def raise_error(self, error: str):
+        # Raise a generic QT error dialog
         QtWidgets.QMessageBox.warning(self, "API Error", error)
 
     def start_search(self):
+        """Main search function. Starts the search worker and connects its signals."""
         if self.validate_config():
-            self.progress_bar.setValue(0)
             client = Client(self.api_token)
+            granularity = timedelta(days=self.granularity_input.value() * 30)
             params = SearchParameters(
                 self.country_input.text(),
                 self.language_input.text(),
                 self.domain_input.text(),
                 self.limit_input.value(),
-                timedelta(days=self.granularity_input.value() * 30),
+                granularity,
                 self.site_list,
             )
             self.search_thread = SearchWorker(client, params, self.rule_list)
@@ -300,6 +308,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self.search_thread.start()
 
     def export_results(self):
+        """Exports the search hits to a CSV file."""
         file_path, check = QtWidgets.QFileDialog.getSaveFileName(
             self, "Exportar resultados", "", "CSV (*.csv)"
         )
@@ -325,6 +334,7 @@ class PanelWindow(QtWidgets.QMainWindow):
 
 
 class RuleDialog(QtWidgets.QDialog):
+    """Dialog for adding and editing rules."""
     def __init__(self, parent=None):
         super(RuleDialog, self).__init__(parent)
 

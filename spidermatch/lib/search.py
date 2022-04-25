@@ -1,4 +1,5 @@
 from __future__ import annotations
+from multiprocessing.sharedctypes import Value
 import zenserp
 from spidermatch.lib.entities import (
     Rule,
@@ -29,7 +30,7 @@ def generate_search_plan(
                 search_plan.append(SearchQuery(rule, params, None, None))
         else:
             raise (
-                Exception("Rule must have from_date and to_date. Not implemented yet.")
+                NotImplementedError("Rule must have from_date and to_date. Not implemented yet.")
             )
 
     return search_plan
@@ -52,7 +53,7 @@ def _search(
     print(response)
     if response.get("error"):
         print("Error:", response["error"])
-        raise (Exception(response["error"]))
+        raise (ValueError(response["error"]))
 
     period_results = response.get("organic")
 
@@ -88,10 +89,7 @@ def _search(
 
 def search(query: SearchQuery, client: zenserp.Client) -> RuleResult:
     """
-    Search for a query in a domain.
-    :param query: Search query.
-    :param client: Zenserp client.
-    :return: RuleResult.
+    Search using a SearchQuery object. High-level interface.
     """
     hits = _search(client, query.rule, query.params, query.from_date, query.to_date)
     return RuleResult(query.rule, hits)
@@ -100,7 +98,5 @@ def search(query: SearchQuery, client: zenserp.Client) -> RuleResult:
 def get_remaining_requests(client: zenserp.Client):
     """
     Get the number of remaining requests.
-    :param client: Zenserp client.
-    :return: Number of remaining requests.
     """
     return client.status()["remaining_requests"]
