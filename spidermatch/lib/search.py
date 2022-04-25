@@ -1,15 +1,41 @@
+from __future__ import annotations
 import zenserp
 from spidermatch.lib.entities import (
     Rule,
     RuleResult,
     SearchParameters,
     Hit,
+    SearchQuery,
 )
 from spidermatch.lib.helpers import calculate_windows
 from datetime import datetime
 
 
-def search(
+def generate_search_plan(
+    rules: list[Rule], params: SearchParameters
+) -> list[SearchQuery]:
+    """Generate the list of queries needed to be run for a given set of rules and params"""
+    search_plan: list[SearchQuery] = []
+    for rule in rules:
+        if rule.from_date and rule.to_date:
+            assert rule.time_length
+            if rule.time_length > params.granularity:
+                windows = calculate_windows(
+                    rule.from_date, rule.to_date, params.granularity
+                )
+                for from_date, to_date in windows:
+                    search_plan.append(SearchQuery(rule, params, from_date, to_date))
+            else:
+                search_plan.append(SearchQuery(rule, params, None, None))
+        else:
+            raise (
+                Exception("Rule must have from_date and to_date. Not implemented yet.")
+            )
+
+    return search_plan
+
+
+def _search(
     client: zenserp.Client,
     rule: Rule,
     params: SearchParameters,
@@ -23,6 +49,7 @@ def search(
     generated_parameters = params.generate_params(rule, from_date, to_date)
     print("Generated parameters: ", generated_parameters)
     response = client.search(generated_parameters)
+    print(response)
     if response.get("error"):
         print("Error:", response["error"])
         raise (Exception(response["error"]))
@@ -58,34 +85,16 @@ def search(
 
     return hits
 
-    # return [
-    #     Hit("Ejemplo 1", "https://www.google.com", 1, "https://www.google.com", "Ejemplo 1", ""),
-    #     Hit("Ejemplo 2", "https://www.google.com", 2, "https://www.google.com", "Ejemplo 2", ""),
-    #     Hit("Ejemplo 3", "https://www.google.com", 3, "https://www.google.com", "Ejemplo 3", ""),
-    # ]
 
-
-def search_rules(client: zenserp.Client, rules: list[Rule], params: SearchParameters):
+def search(query: SearchQuery, client: zenserp.Client) -> RuleResult:
     """
     Search for a query in a domain.
+    :param query: Search query.
+    :param client: Zenserp client.
+    :return: RuleResult.
     """
-
-    for i, rule in enumerate(rules):
-        if rule.from_date and rule.to_date:
-            assert rule.time_length
-            if rule.time_length > params.granularity:
-                windows = calculate_windows(
-                    rule.from_date, rule.to_date, params.granularity
-                )
-                for window in windows:
-                    yield (i, RuleResult(rule, search(client, rule, params, window[0], window[1])))
-            else:
-                hit_results: list[Hit] = search(client, rule, params)
-                yield (i, RuleResult(rule, hit_results))
-        else:
-            raise (
-                Exception("Rule must have from_date and to_date. Not implemented yet.")
-            )
+    hits = _search(client, query.rule, query.params, query.from_date, query.to_date)
+    return RuleResult(query.rule, hits)
 
 
 def get_remaining_requests(client: zenserp.Client):

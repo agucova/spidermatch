@@ -1,14 +1,16 @@
 from datetime import datetime, timedelta
 
+
 def generate_tbs(from_date: datetime | None, to_date: datetime | None):
-        tbs = ""
-        if from_date or to_date:
-            tbs = "cdr:1"
-        if from_date:
-            tbs += "," + "cd_min:" + from_date.strftime("%-m/%-d/%Y")
-        if to_date:
-            tbs += "," + "cd_max:" + to_date.strftime("%-m/%-d/%Y")
-        return tbs
+    tbs = ""
+    if from_date or to_date:
+        tbs = "cdr:1"
+    if from_date:
+        tbs += "," + "cd_min:" + from_date.strftime("%-m/%-d/%Y")
+    if to_date:
+        tbs += "," + "cd_max:" + to_date.strftime("%-m/%-d/%Y")
+    return tbs
+
 
 def calculate_windows(from_date: datetime, to_date: datetime, granularity: timedelta):
     """Divide a time period into windows of a given granularity."""
@@ -24,4 +26,3 @@ def calculate_windows(from_date: datetime, to_date: datetime, granularity: timed
         windows[-1] = (windows[-1][0], to_date)
 
     return windows
-

@@ -1,10 +1,12 @@
-from spidermatch.lib.search import search_rules
-from spidermatch.lib.entities import Hit, Rule, RuleResult, SearchParameters
+from spidermatch.lib.search import generate_search_plan, search
+from spidermatch.lib.entities import Rule, RuleResult, SearchParameters
 from PyQt6.QtCore import QThread, pyqtSignal
 from math import floor
 from zenserp import Client
 
+
 class SearchWorker(QThread):
+    configure_progress_bar = pyqtSignal(int, int)
     progress = pyqtSignal(int, RuleResult)
     error = pyqtSignal(str)
 
@@ -15,11 +17,10 @@ class SearchWorker(QThread):
         self.rules = rules
 
     def run(self):
-        try:
-            for i, result in search_rules(self.client, self.rules, self.params):
-                self.progress.emit(floor(i / len(self.rules) * 100), result)
-        except Exception as e:
-            self.error.emit(str(e))
-
-        self.progress.emit(len(self.rules), None)
-
+        search_plan = generate_search_plan(self.rules, self.params)
+        self.configure_progress_bar.emit(0, len(search_plan) - 1)
+        for i, query in enumerate(search_plan):
+            try:
+                self.progress.emit(i, search(query, self.client))
+            except Exception as e:
+                self.error.emit(str(e))

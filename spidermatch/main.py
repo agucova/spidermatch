@@ -1,6 +1,5 @@
 from __future__ import annotations
 from datetime import datetime, timedelta
-from math import floor
 
 import re
 import sys
@@ -264,7 +263,12 @@ class PanelWindow(QtWidgets.QMainWindow):
             return False
         return True
 
-    def receive_progress(self, progress: int, result: RuleResult):
+    def configure_progress_bar(self, minimum: int, maximum: int):
+        self.progress_bar.setMinimum(minimum)
+        self.progress_bar.setMaximum(maximum)
+        self.progress_bar.setValue(minimum)
+
+    def receive_search_progress(self, progress: int, result: RuleResult):
         self.progress_bar.setValue(progress)
         if result is not None:
             self.rule_result_list.append(result)
@@ -286,7 +290,10 @@ class PanelWindow(QtWidgets.QMainWindow):
                 self.site_list,
             )
             self.search_thread = SearchWorker(client, params, self.rule_list)
-            self.search_thread.progress.connect(self.receive_progress)
+            self.search_thread.progress.connect(self.receive_search_progress)
+            self.search_thread.configure_progress_bar.connect(
+                self.configure_progress_bar
+            )
             self.search_thread.finished.connect(self.search_thread.deleteLater)
             self.search_thread.error.connect(self.raise_error)
 
@@ -300,7 +307,15 @@ class PanelWindow(QtWidgets.QMainWindow):
             with open(file_path, "w") as f:
                 writer = csv.writer(f)
                 writer.writerow(
-                    ("rule_name", "title", "url", "position", "destination", "description", "date")
+                    (
+                        "rule_name",
+                        "title",
+                        "url",
+                        "position",
+                        "destination",
+                        "description",
+                        "date",
+                    )
                 )
                 for rule_result in self.rule_result_list:
                     name = rule_result.rule.name

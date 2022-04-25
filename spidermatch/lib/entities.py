@@ -5,7 +5,7 @@ from spidermatch.lib.helpers import calculate_windows, generate_tbs
 
 
 @dataclass
-class Rule():
+class Rule:
     """
     A rule is a search query for a specific time period.
     """
@@ -76,7 +76,12 @@ class SearchParameters:
         self.granularity = granularity
         self.sites = sites
 
-    def generate_params(self, rule: Rule, from_date: datetime | None = None, to_date: datetime | None = None):
+    def generate_params(
+        self,
+        rule: Rule,
+        from_date: datetime | None = None,
+        to_date: datetime | None = None,
+    ):
         from_date = from_date if from_date else rule.from_date
         to_date = to_date if to_date else rule.to_date
 
@@ -90,10 +95,18 @@ class SearchParameters:
             ("hl", self.language),
             ("gl", self.country),
             ("num", self.limit),
-            ("tbs", generate_tbs(from_date, to_date))
+            ("tbs", generate_tbs(from_date, to_date)),
         )
 
         return params
+
+
+@dataclass(frozen=True)
+class SearchQuery:
+    rule: Rule
+    params: SearchParameters
+    from_date: datetime | None = None
+    to_date: datetime | None = None
 
 
 @dataclass(frozen=True)
