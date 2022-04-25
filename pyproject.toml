@@ -36,6 +36,7 @@ python = "^3.8"
 qt-material = "^2.10"
 PyQt6 = "^6.2.3"
 zenserp = "^0.2"
+beartype = "^0.10.4"
 
 [tool.poetry.dev-dependencies]
 bumpversion = "^0.6"

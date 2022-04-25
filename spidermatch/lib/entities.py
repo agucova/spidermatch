@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 
 from spidermatch.lib.helpers import calculate_windows, generate_tbs
 
+from beartype import beartype
+
 
 @dataclass
 class Rule:
@@ -16,6 +18,7 @@ class Rule:
     to_date: datetime | None = None
 
     @property
+    @beartype
     def time_length(self) -> timedelta | None:
         if self.from_date and self.to_date:
             return self.to_date - self.from_date
@@ -27,7 +30,8 @@ class Rule:
             return None
 
     @property
-    def is_time_constrained(self):
+    @beartype
+    def is_time_constrained(self) -> bool:
         return bool(self.from_date or self.to_date)
 
     def date_str(self):
@@ -60,6 +64,7 @@ class SearchConfig:
     General configuration parameters used for searching incidents
     """
 
+    @beartype
     def __init__(
         self,
         country: str = "CL",
@@ -76,6 +81,7 @@ class SearchConfig:
         self.granularity = granularity
         self.sites = sites
 
+    @beartype
     def generate_params(
         self,
         rule: Rule,

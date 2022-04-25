@@ -9,6 +9,7 @@ from qt_material import apply_stylesheet
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from spidermatch.worker import SearchWorker
 from zenserp import Client
+from beartype import beartype
 
 
 class WelcomeWindow(QtWidgets.QMainWindow):
@@ -267,12 +268,14 @@ class PanelWindow(QtWidgets.QMainWindow):
             return False
         return True
 
+    @beartype
     def configure_progress_bar(self, minimum: int, maximum: int):
         """This allows resetting the progress bar and setting its maximum."""
         self.progress_bar.setMinimum(minimum)
         self.progress_bar.setMaximum(maximum)
         self.progress_bar.setValue(minimum)
 
+    @beartype
     def receive_search_progress(self, progress: int, result: RuleResult):
         """Receiver for progress signals from the search worker. Updates the progress bar."""
         self.progress_bar.setValue(progress)
@@ -280,6 +283,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self.rule_result_list.append(result)
             self.update_hits_list()
 
+    @beartype
     def raise_error(self, error: str):
         # Raise a generic QT error dialog
         QtWidgets.QMessageBox.warning(self, "API Error", error)

@@ -9,8 +9,9 @@ from spidermatch.lib.entities import (
 )
 from spidermatch.lib.helpers import calculate_windows
 from datetime import datetime
+from beartype import beartype
 
-
+@beartype
 def generate_search_plan(
     rules: list[Rule], config: SearchConfig
 ) -> list[SearchQuery]:
@@ -34,14 +35,14 @@ def generate_search_plan(
 
     return search_plan
 
-
+@beartype
 def _search(
     client: zenserp.Client,
     rule: Rule,
     params: SearchConfig,
     from_date: datetime | None = None,
     to_date: datetime | None = None,
-):
+) -> list[Hit]:
     """
     Search for a query in a domain.
     """
@@ -86,6 +87,7 @@ def _search(
     return hits
 
 
+@beartype
 def search(query: SearchQuery, client: zenserp.Client) -> RuleResult:
     """
     Search using a SearchQuery object. High-level interface.
@@ -93,8 +95,8 @@ def search(query: SearchQuery, client: zenserp.Client) -> RuleResult:
     hits = _search(client, query.rule, query.config, query.from_date, query.to_date)
     return RuleResult(query.rule, hits)
 
-
-def get_remaining_requests(client: zenserp.Client):
+@beartype
+def get_remaining_requests(client: zenserp.Client) -> int:
     """
     Get the number of remaining requests.
     """

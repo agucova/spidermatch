@@ -1,16 +1,17 @@
 from spidermatch.lib.search import generate_search_plan, search
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from PyQt6.QtCore import QThread, pyqtSignal
-from math import floor
 from zenserp import Client
 
+from beartype import beartype
 
 class SearchWorker(QThread):
     configure_progress_bar = pyqtSignal(int, int)
     progress = pyqtSignal(int, RuleResult)
     error = pyqtSignal(str)
 
-    def __init__(self, client: Client, config: SearchConfig, rules: list[Rule]):
+    @beartype
+    def __init__(self, client: Client, config   : SearchConfig, rules: list[Rule]):
         super().__init__()
         self.client = client
         self.params = config
