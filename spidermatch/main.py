@@ -101,7 +101,7 @@ class PanelWindow(QtWidgets.QMainWindow):
                     has_header = sniffer.has_header(f.read(1024))
                     f.seek(0)
 
-                    # Read the actual CSV
+                    # Instantiate the reader to actually read the CSV
                     reader = csv.reader(f, dialect)
                 except csv.Error:
                     f.seek(0)
@@ -119,7 +119,7 @@ class PanelWindow(QtWidgets.QMainWindow):
                         QtWidgets.QMessageBox.warning(
                             self,
                             "Advertencia",
-                            f"Dominio inválido en la línea {i} (saltado). Recuerda no usar http:// o https:// antes del dominio.",
+                            f"Dominio inválido en la línea {i + 1} (saltado). Recuerda no usar http:// o https:// antes del dominio.",
                         )
                         errors += 1
                         if errors >= 3:
