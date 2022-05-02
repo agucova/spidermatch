@@ -1,8 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from beartype import beartype
 
 
-@beartype
 def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
     tbs = ""
     if from_date or to_date:
@@ -16,8 +15,8 @@ def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
 
 @beartype
 def calculate_windows(
-    from_date: datetime, to_date: datetime, granularity: timedelta
-) -> list[tuple[datetime, datetime]]:
+    from_date: date, to_date: date, granularity: timedelta
+) -> list[tuple[date | datetime, date | datetime]]:
     """Divide a time period into windows of a given granularity."""
     window_size = granularity.days
     windows = []

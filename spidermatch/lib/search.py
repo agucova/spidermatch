@@ -1,22 +1,25 @@
 from __future__ import annotations
+
+from datetime import datetime
+
 import zenserp
+from beartype import beartype
+from rich import print
+
 from spidermatch.lib.entities import (
+    Hit,
     Rule,
     RuleResult,
     SearchConfig,
-    Hit,
     SearchParameters,
     SearchQuery,
 )
 from spidermatch.lib.helpers import calculate_windows
-from datetime import datetime
-from beartype import beartype
 
 # The high-level view of this is that
 # 1. We generate a search plan that automatically creates all
 # the queries needed to search for all the rules
-# 2. The (UI) search workers dispatchs each search based
-
+# 2. The (UI) search workers dispatchs each search based on the plan
 
 @beartype
 def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[SearchQuery]:
@@ -57,11 +60,10 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
                     "Rule must have from_date and to_date. Not implemented yet."
                 )
             )
-
+    print(f"[bold cyan][INFO][/bold cyan] Generated search plan with a total of {len(search_plan)} queries.")
     return search_plan
 
 
-@beartype
 def _search(
     client: zenserp.Client,
     rule: Rule,
@@ -73,18 +75,17 @@ def _search(
     Search for a query in a domain.
     """
     response = client.search(params.to_tuple())
-    print(response)
     if response.get("error"):
-        print("Error:", response["error"])
+        print("[bold red][ERROR][/bold red] Error detected in API response: ", response["error"])
         raise (ValueError(response["error"]))
 
     period_results = response.get("organic")
 
     if period_results is None:
-        print("No results found, skipping.")
+        print(f"[bold yellow][WARN][/bold yellow] No results found for rule '{rule.name}' between {from_date} and {to_date}, skipping.")
         return []
 
-    print(period_results)
+    print(f"[bold cyan][INFO][/bold cyan] Found {len(period_results)} results for rule '{rule.name}' between {from_date} and {to_date}.")
 
     hits: list[Hit] = []
     for hit in period_results:
@@ -92,8 +93,7 @@ def _search(
             continue
 
         if not hit.get("title"):
-            print("Found hit without title, attributes: ", hit.keys())
-            print("(Skipping...)")
+            # These are usually images
             continue
 
         hits.append(

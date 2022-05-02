@@ -206,7 +206,7 @@
        </sizepolicy>
       </property>
       <property name="title">
-       <string>Sitios y Fuentes</string>
+       <string>Sitios y Fuentes (0)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -269,7 +269,7 @@
        </sizepolicy>
       </property>
       <property name="title">
-       <string>Reglas de Busqueda</string>
+       <string>Reglas de Busqueda (0)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -331,7 +331,7 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QGroupBox" name="log_group_box">
+     <widget class="QGroupBox" name="hits_group_box">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -339,7 +339,7 @@
        </sizepolicy>
       </property>
       <property name="title">
-       <string>Resultados</string>
+       <string>Resultados (0)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

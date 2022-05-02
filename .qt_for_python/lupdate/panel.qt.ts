@@ -70,7 +70,7 @@
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Sitios y Fuentes</source>
+      <source>Sitios y Fuentes (0)</source>
       <translation type="unfinished" />
     </message>
     <message>
@@ -100,7 +100,7 @@
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Reglas de Busqueda</source>
+      <source>Reglas de Busqueda (0)</source>
       <translation type="unfinished" />
     </message>
     <message>
@@ -110,7 +110,7 @@
     </message>
     <message>
       <location filename="../../spidermatch/windows/panel.ui" line="0" />
-      <source>Resultados</source>
+      <source>Resultados (0)</source>
       <translation type="unfinished" />
     </message>
     <message>

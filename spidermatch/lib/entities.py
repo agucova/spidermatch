@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
+from multiprocessing.sharedctypes import Value
 from typing import NamedTuple
 
 from spidermatch.lib.helpers import generate_tbs, split, count_terms
@@ -58,6 +59,11 @@ class Rule:
             self.to_date.isoformat() if self.to_date else "",
         )
 
+class RuleTooLong(ValueError):
+    def __init__(self, rule: Rule):
+        self.rule = rule
+        self.message = f"La regla {self.rule} es demasiado larga. Prueba dividiéndola en reglas más pequeñas o disminuyendo la cantidad de dominios."
+        super().__init__(self.message)
 
 class SearchParameters(NamedTuple):
     """Parameters for a specific query as sent to the API."""
@@ -102,7 +108,6 @@ class SearchConfig:
         self.granularity = granularity
         self.sites = sites
 
-    @beartype
     def generate_params(
         self,
         rule: Rule,
@@ -116,7 +121,7 @@ class SearchConfig:
         if self.sites:
             query += " site:" + " OR site:".join(self.sites)
 
-        if len(query) <= 4096:
+        if len(query) <= 500:
             # or count_terms(query) <= 32
             # If the query is within the target length
             query_params = SearchParameters(
@@ -129,27 +134,24 @@ class SearchConfig:
 
             return [query_params]
         else:
+            assert self.sites, "Sites must be specified to split queries. Possibly not implemented."
             # Break up query into the least queries possible
             # Yeah, this is done via exhaustive search, but speed doesn't
             # seem to be an issue.
             query_params = [query]
             split_into = 2
-            while (
-                max(len(query) for q in query_params) > 4096
-                # or max(count_terms(query) for q in query_params) > 32
-            ):
-                if split_into > 50:
-                    print("Query might be irreducible.")
+            while max(len(q) for q in query_params) > 500:
+                if split_into > len(self.sites):
+                    raise RuleTooLong(rule)
                 site_groups = split(self.sites, split_into)
                 query_params = []
                 for site_group in site_groups:
-                    query_group = rule.query
+                    query_group: str = rule.query
                     if site_group:
                         query_group += " site:" + " OR site:".join(site_group)
                     query_params.append(query_group)
                 split_into += 1
 
-            print(f"Split query into {split_into} parts.")
             # Here we wrap the queries into their corresponding
             # search parameter objects.
             query_params = [
@@ -207,8 +209,3 @@ class RuleResult:
 
     rule: Rule
     hits: list[Hit]
-
-class
-
-class IntermediateSearchTerms:
-    def __init__(self, query: str):

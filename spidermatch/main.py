@@ -84,15 +84,21 @@ class PanelWindow(QtWidgets.QMainWindow):
     def update_site_list(self):
         self.site_list_view.clear()
         self.site_list_view.addItems(self.site_list)
+        self.sites_group_box.setTitle(f"Sitios ({len(self.site_list)})")
 
     def update_rule_list(self):
         self.rule_list_view.clear()
         self.rule_list_view.addItems(str(rule) for rule in self.rule_list)
+        self.rules_group_box.setTitle(f"Reglas ({len(self.rule_list)})")
 
     def update_hits_list(self):
         self.hits_list_view.clear()
+        total_hits = 0
         for rule_result in self.rule_result_list:
             self.hits_list_view.addItems(str(hit) for hit in rule_result.hits)
+            total_hits += len(rule_result.hits)
+        # Update group box title
+        self.hits_group_box.setTitle(f"Resultados ({total_hits})")
 
     def import_sites(self):
         # TODO: Add dialogue validation
@@ -180,32 +186,39 @@ class PanelWindow(QtWidgets.QMainWindow):
         )
         if check:
             with open(file_path, "r") as f:
-                try:
-                    # Sniff CSV patterns
-                    sniffer = csv.Sniffer()
-                    dialect = sniffer.sniff(f.read(1024))
-                    f.seek(0)
-                    has_header = sniffer.has_header(f.read(1024))
-                    f.seek(0)
+                # try:
+                #     # Sniff CSV patterns
+                #     sniffer = csv.Sniffer()
+                #     dialect = sniffer.sniff(f.read(1024))
+                #     f.seek(0)
+                #     has_header = sniffer.has_header(f.read(1024))
+                #     f.seek(0)
 
-                    # Read the actual CSV
-                    reader = csv.reader(f, dialect)
-                except csv.Error:
-                    f.seek(0)
-                    reader = csv.reader(f)
-                    has_header = True
+                #     # Read the actual CSV
+                #     reader = csv.reader(f, dialect)
+                # except csv.Error:
+                f.seek(0)
+                reader = csv.reader(f)
+                has_header = True
 
                 for i, row in enumerate(reader):
                     if i == 0 and has_header:
                         continue
-                    self.rule_list.append(
-                        Rule(
-                            row[0],
-                            row[1],
-                            datetime.fromisoformat(row[2]),
-                            datetime.fromisoformat(row[3]),
+                    try:
+                        self.rule_list.append(
+                            Rule(
+                                row[0],
+                                row[1],
+                                datetime.fromisoformat(row[2]),
+                                datetime.fromisoformat(row[3]),
+                            )
                         )
-                    )
+                    except IndexError:
+                        QtWidgets.QMessageBox.warning(
+                            self,
+                            "Error",
+                            f"Regla inválida en la línea {i + 1}. Recuerda que el CSV de reglas debe tener 4 columnas.",
+                        )
             self.update_rule_list()
 
     def export_rules(self):
@@ -281,9 +294,10 @@ class PanelWindow(QtWidgets.QMainWindow):
     def receive_search_progress(self, progress: int, result: RuleResult):
         """Receiver for progress signals from the search worker. Updates the progress bar."""
         self.progress_bar.setValue(progress)
-        if result is not None:
+        if result is not None and len(result.hits) > 0:
             self.rule_result_list.append(result)
             self.update_hits_list()
+
 
     @beartype
     def raise_error(self, error: str):
