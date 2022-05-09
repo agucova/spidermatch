@@ -11,11 +11,6 @@ investigations in policing.
 
 -   Free software: GNU General Public License v3
 
-Features
---------
-
--   TODO
-
 Credits
 -------
 
