@@ -32,7 +32,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<3.11"
 qt-material = "^2.10"
 PyQt6 = "^6.2.3"
 zenserp = "^0.2"
@@ -47,6 +47,7 @@ flake8 = "^4.0"
 isort = "^5.10"
 pytest = "^7.1"
 black = "^22.1"
+pyinstaller = "^5.0.1"
 
 [tool.poetry.scripts]
 
