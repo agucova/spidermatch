@@ -1,20 +1,12 @@
-SpiderMatch
-===========
+# SpiderMatch
+[![image](https://img.shields.io/pypi/v/spidermatch.svg)](https://pypi.python.org/pypi/spidermatch) [![Bundle App](https://github.com/agucova/spidermatch/actions/workflows/main.yml/badge.svg)](https://github.com/agucova/spidermatch/actions/workflows/main.yml)
 
-[![image](https://img.shields.io/pypi/v/spidermatch.svg)](https://pypi.python.org/pypi/spidermatch)
+![](spidermatch/assets/logo_dark.png#gh-dark-mode-only)
+![](spidermatch/assets/logo_light.png#gh-light-mode-only)
 
-![](spidermatch/assets/logo.png)
-
-An open-source app for setting up automated spider lookups of incidents
+An open-source app for setting up automated search engine lookups for incidents
 covered by local news in a certain country. Used for OSINT
 investigations in policing.
 
--   Free software: GNU General Public License v3
+This app is free software under the GNU General Public License v3.
 
-Credits
--------
-
-This package was created with
-[Cookiecutter](https://github.com/audreyr/cookiecutter) and the
-[audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage)
-project template.
