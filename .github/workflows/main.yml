@@ -41,8 +41,13 @@ jobs:
             - name: Test Poetry Run
               run: poetry run python -c "print('hey!')"
 
-            - name: ls
-              run: echo $PWD && ls
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
+              with:
+                  ## limits ssh access and adds the ssh public key for the user which triggered the workflow
+                  limit-access-to-actor: true
+                  ## limits ssh access and adds the ssh public keys of the listed GitHub users
+                  limit-access-to-users: agucova
 
             - name: Manual PyInstaller
               run: poetry run pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
@@ -82,11 +87,3 @@ jobs:
 
             - name: Run tests
               run: just test
-
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
-              with:
-                  ## limits ssh access and adds the ssh public key for the user which triggered the workflow
-                  limit-access-to-actor: true
-                  ## limits ssh access and adds the ssh public keys of the listed GitHub users
-                  limit-access-to-users: agucova
