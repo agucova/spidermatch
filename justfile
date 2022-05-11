@@ -7,6 +7,7 @@ alias c := coverage
 alias r := release
 alias b := build
 
+os_family := os_family()
 # Code Quality
 format:
     poetry run black .
@@ -58,5 +59,9 @@ release: build
 build: clean
 	poetry build
 
+# Use the OS specific delimiters for paths in PyInstaller
+windows_path := if os_family == "windows" { "spidermatch/windows/;windows/" } else { "spidermatch/windows/:windows/" }
+assets_path := if os_family == "windows" { "spidermatch/assets/;assets/" } else { "spidermatch/assets/:assets/" }
+
 bundle: clean
-    poetry run pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
+    poetry run pyinstaller --onefile --windowed --noconfirm --add-data {{ windows_path }} --add-data {{ assets_path }} -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
