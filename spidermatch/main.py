@@ -16,7 +16,7 @@ from spidermatch.worker import SearchWorker
 
 # Get working directory for pyinstaller
 try:
-    WORKING_DIRECTORY = Path(sys._MEIPASS)
+    WORKING_DIRECTORY = Path(sys._MEIPASS)  # type: ignore
 except AttributeError:
     WORKING_DIRECTORY = Path.cwd()
 
