@@ -36,8 +36,11 @@ jobs:
       - name: Install the Just task runner
         uses: extractions/setup-just@v1
 
+      - name: Test Poetry Run
+        run: poetry run python -c "print('hey!')"
+
       - name: Manual PyInstaller
-        run: pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
+        run: poetry run pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
 
       - name: Bundle
         run: just bundle
