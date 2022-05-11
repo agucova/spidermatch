@@ -39,6 +39,9 @@ jobs:
       - name: Test Poetry Run
         run: poetry run python -c "print('hey!')"
 
+      - name: ls
+        run: echo $PWD && ls
+
       - name: Manual PyInstaller
         run: poetry run pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
 
