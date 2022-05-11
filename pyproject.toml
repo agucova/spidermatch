@@ -48,6 +48,7 @@ isort = "^5.10"
 pytest = "^7.1"
 black = "^22.1"
 pyinstaller = "^5.0.1"
+Pillow = "^9.1.0"
 
 [tool.poetry.scripts]
 
