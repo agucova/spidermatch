@@ -33,29 +33,8 @@ jobs:
               with:
                   poetry-version: ${{ matrix.poetry-version }}
 
-            - name: Load cached pip directory
-              uses: actions/cache@v2
-              with:
-                path: ~/.cache/pip
-                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-
-            - name: Load cached venv
-              id: cached-poetry-venv
-              uses: actions/cache@v2
-              with:
-                path: ~/.cache/pypoetry
-                key: ${{ runner.os }}-pypoetry-${{ hashFiles('**/poetry.lock') }}
-
             - name: Install dependencies
               run: poetry install
-
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
-              with:
-                ## limits ssh access and adds the ssh public key for the user which triggered the workflow
-                limit-access-to-actor: true
-                ## limits ssh access and adds the ssh public keys of the listed GitHub users
-                limit-access-to-users: agucova
 
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
@@ -98,22 +77,8 @@ jobs:
               with:
                   poetry-version: ${{ matrix.poetry-version }}
 
-            - name: Load cached pip directory
-              uses: actions/cache@v2
-              with:
-                path: ~/.cache/pip
-                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-
-            - name: Load cached venv
-              id: cached-poetry-venv
-              uses: actions/cache@v2
-              with:
-                path: ~/.cache/pypoetry
-                key: ${{ runner.os }}-pypoetry-${{ hashFiles('**/poetry.lock') }}
-
             - name: Install dependencies
               run: poetry install
-              if: steps.cached-poetry-venv.outputs.cache-hit != 'true'
 
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
