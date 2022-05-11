@@ -4,20 +4,26 @@ from datetime import datetime, timedelta
 import re
 import sys
 import csv
+from pathlib import Path
 from PyQt6 import QtWidgets, uic
-from qt_material import apply_stylesheet
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from spidermatch.worker import SearchWorker
+from qt_material import apply_stylesheet
 from zenserp import Client
 from beartype import beartype
 
+# Get working directory for pyinstaller
+try:
+    WORKING_DIRECTORY = Path(sys._MEIPASS)
+except AttributeError:
+    WORKING_DIRECTORY = Path.cwd()
 
 class WelcomeWindow(QtWidgets.QMainWindow):
     """Welcome window that asks for the API key."""
 
     def __init__(self):
         super(WelcomeWindow, self).__init__()
-        uic.loadUi("windows/welcome.ui", self)
+        uic.loadUi(WORKING_DIRECTORY / "windows/welcome.ui", self)
         # Connect the save button to the save_token method
         self.api_save_button.clicked.connect(self.save_token)
         # Set input enter to submit button
@@ -50,7 +56,7 @@ class PanelWindow(QtWidgets.QMainWindow):
         self.rule_result_list: list[RuleResult] = []
 
         # Load the UI
-        uic.loadUi("windows/panel.ui", self)
+        uic.loadUi(WORKING_DIRECTORY / "windows/panel.ui", self)
 
         # Store API Token
         self.api_token = api_token
@@ -360,7 +366,7 @@ class RuleDialog(QtWidgets.QDialog):
         super(RuleDialog, self).__init__(parent)
 
         # Load the UI
-        uic.loadUi("windows/rule.ui", self)
+        uic.loadUi(WORKING_DIRECTORY / "windows/rule.ui", self)
 
         self.show()
 
