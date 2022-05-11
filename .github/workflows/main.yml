@@ -48,7 +48,14 @@ jobs:
 
             - name: Install dependencies
               run: poetry install
-              if: steps.cached-poetry-venv.outputs.cache-hit != 'true'
+
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
+              with:
+                ## limits ssh access and adds the ssh public key for the user which triggered the workflow
+                limit-access-to-actor: true
+                ## limits ssh access and adds the ssh public keys of the listed GitHub users
+                limit-access-to-users: agucova
 
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
