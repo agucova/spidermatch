@@ -33,12 +33,22 @@ jobs:
               with:
                   poetry-version: ${{ matrix.poetry-version }}
 
-            - name: Load cached venv
-              id: cached-poetry-dependencies
+            - name: Load cached pip directory
               uses: actions/cache@v2
               with:
-                path: .venv
-                key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+                path: ~/.cache/pip
+                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+
+            - name: Load cached venv
+              id: cached-poetry-venv
+              uses: actions/cache@v2
+              with:
+                path: ~/.cache/pypoetry
+                key: ${{ runner.os }}-pypoetry-${{ hashFiles('**/poetry.lock') }}
+
+            - name: Install dependencies
+              run: poetry install
+              if: steps.cached-poetry-venv.outputs.cache-hit != 'true'
 
             - name: Install dependencies
               run: poetry install
