@@ -92,7 +92,7 @@ jobs:
                 key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
 
             - name: Load cached venv
-              id: cached-poetry-dependencies
+              id: cached-poetry-venv
               uses: actions/cache@v2
               with:
                 path: ~/.cache/pypoetry
@@ -100,7 +100,7 @@ jobs:
 
             - name: Install dependencies
               run: poetry install
-              if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+              if: steps.cached-poetry-venv.outputs.cache-hit != 'true'
 
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
