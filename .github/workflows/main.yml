@@ -38,3 +38,9 @@ jobs:
 
       - name: Bundle
         run: just bundle
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+            name: ${{ matrix.os }}-${{ matrix.node-version }}
+            path: dist/
