@@ -33,24 +33,13 @@ jobs:
               with:
                   poetry-version: ${{ matrix.poetry-version }}
 
+            - name: Install deps
+              run: poetry install
+
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Test Poetry Run
-              run: poetry run python -c "print('hey!')"
-
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
-              with:
-                  ## limits ssh access and adds the ssh public key for the user which triggered the workflow
-                  limit-access-to-actor: true
-                  ## limits ssh access and adds the ssh public keys of the listed GitHub users
-                  limit-access-to-users: agucova
-
-            - name: Manual PyInstaller
-              run: poetry run pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
 
             - name: Bundle
               run: just bundle
@@ -79,6 +68,9 @@ jobs:
               uses: abatilo/actions-poetry@v2.0.0
               with:
                   poetry-version: ${{ matrix.poetry-version }}
+
+            - name: Install deps
+              run: poetry install
 
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
