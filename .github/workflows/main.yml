@@ -39,6 +39,10 @@ jobs:
       - name: Bundle
         run: just bundle
 
+      - name: Manual PyInstaller
+        run: poetry run pyinstaller --onefile --windowed --noconfirm --add-data spidermatch/windows/:windows/ --add-data spidermatch/assets/:assets/ -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
+
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
