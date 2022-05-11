@@ -21,6 +21,7 @@ from spidermatch.lib.helpers import calculate_windows
 # the queries needed to search for all the rules
 # 2. The (UI) search workers dispatchs each search based on the plan
 
+
 @beartype
 def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[SearchQuery]:
     """
@@ -60,7 +61,9 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
                     "Rule must have from_date and to_date. Not implemented yet."
                 )
             )
-    print(f"[bold cyan][INFO][/bold cyan] Generated search plan with a total of {len(search_plan)} queries.")
+    print(
+        f"[bold cyan][INFO][/bold cyan] Generated search plan with a total of {len(search_plan)} queries."
+    )
     return search_plan
 
 
@@ -76,16 +79,23 @@ def _search(
     """
     response = client.search(params.to_tuple())
     if response.get("error"):
-        print("[bold red][ERROR][/bold red] Error detected in API response: ", response["error"])
+        print(
+            "[bold red][ERROR][/bold red] Error detected in API response: ",
+            response["error"],
+        )
         raise (ValueError(response["error"]))
 
     period_results = response.get("organic")
 
     if period_results is None:
-        print(f"[bold yellow][WARN][/bold yellow] No results found for rule '{rule.name}' between {from_date} and {to_date}, skipping.")
+        print(
+            f"[bold yellow][WARN][/bold yellow] No results found for rule '{rule.name}' between {from_date} and {to_date}, skipping."
+        )
         return []
 
-    print(f"[bold cyan][INFO][/bold cyan] Found {len(period_results)} results for rule '{rule.name}' between {from_date} and {to_date}.")
+    print(
+        f"[bold cyan][INFO][/bold cyan] Found {len(period_results)} results for rule '{rule.name}' between {from_date} and {to_date}."
+    )
 
     hits: list[Hit] = []
     for hit in period_results:

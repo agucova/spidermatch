@@ -16,7 +16,10 @@ class Ui_RuleDialog(object):
         self.button_box = QtWidgets.QDialogButtonBox(RuleDialog)
         self.button_box.setGeometry(QtCore.QRect(50, 260, 341, 32))
         self.button_box.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.button_box.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.button_box.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Cancel
+            | QtWidgets.QDialogButtonBox.StandardButton.Ok
+        )
         self.button_box.setObjectName("button_box")
         self.gridLayoutWidget = QtWidgets.QWidget(RuleDialog)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 381, 237))
@@ -36,44 +39,69 @@ class Ui_RuleDialog(object):
         self.formLayout.setObjectName("formLayout")
         self.label = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label
+        )
         self.label_2 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_2)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_2
+        )
         self.from_input = QtWidgets.QDateEdit(self.gridLayoutWidget)
-        self.from_input.setDateTime(QtCore.QDateTime(QtCore.QDate(2022, 1, 1), QtCore.QTime(0, 0, 0)))
+        self.from_input.setDateTime(
+            QtCore.QDateTime(QtCore.QDate(2022, 1, 1), QtCore.QTime(0, 0, 0))
+        )
         self.from_input.setCalendarPopup(True)
         self.from_input.setObjectName("from_input")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.from_input)
+        self.formLayout.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.from_input
+        )
         self.to_input = QtWidgets.QDateEdit(self.gridLayoutWidget)
-        self.to_input.setDateTime(QtCore.QDateTime(QtCore.QDate(2022, 12, 31), QtCore.QTime(0, 0, 0)))
+        self.to_input.setDateTime(
+            QtCore.QDateTime(QtCore.QDate(2022, 12, 31), QtCore.QTime(0, 0, 0))
+        )
         self.to_input.setCalendarPopup(True)
         self.to_input.setObjectName("to_input")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.to_input)
+        self.formLayout.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.to_input
+        )
         self.label_3 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_3)
+        self.formLayout.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_3
+        )
         self.label_4 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_4.setObjectName("label_4")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_4)
+        self.formLayout.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_4
+        )
         self.name_input = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.name_input.setObjectName("name_input")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.name_input)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.name_input
+        )
         self.query_input = QtWidgets.QTextEdit(self.gridLayoutWidget)
         self.query_input.setAcceptRichText(False)
         self.query_input.setObjectName("query_input")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.query_input)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.query_input
+        )
         self.gridLayout.addLayout(self.formLayout, 1, 0, 1, 1)
 
         self.retranslateUi(RuleDialog)
-        self.button_box.accepted.connect(RuleDialog.accept) # type: ignore
-        self.button_box.rejected.connect(RuleDialog.reject) # type: ignore
+        self.button_box.accepted.connect(RuleDialog.accept)  # type: ignore
+        self.button_box.rejected.connect(RuleDialog.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(RuleDialog)
 
     def retranslateUi(self, RuleDialog):
         _translate = QtCore.QCoreApplication.translate
         RuleDialog.setWindowTitle(_translate("RuleDialog", "Dialog"))
-        self.title.setText(_translate("RuleDialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:700;\">Regla</span></p></body></html>"))
+        self.title.setText(
+            _translate(
+                "RuleDialog",
+                '<html><head/><body><p align="center"><span style=" font-size:14pt; font-weight:700;">Regla</span></p></body></html>',
+            )
+        )
         self.label.setText(_translate("RuleDialog", "Nombre:"))
         self.label_2.setText(_translate("RuleDialog", "Busqueda:"))
         self.from_input.setDisplayFormat(_translate("RuleDialog", "d/M/yyyy"))
@@ -81,4 +109,6 @@ class Ui_RuleDialog(object):
         self.label_3.setText(_translate("RuleDialog", "Desde:"))
         self.label_4.setText(_translate("RuleDialog", "Hasta:"))
         self.name_input.setPlaceholderText(_translate("RuleDialog", "Ej: Agentes"))
-        self.query_input.setPlaceholderText(_translate("RuleDialog", "Ej: \"fuerzas armadas\" OR carabineros"))
+        self.query_input.setPlaceholderText(
+            _translate("RuleDialog", 'Ej: "fuerzas armadas" OR carabineros')
+        )

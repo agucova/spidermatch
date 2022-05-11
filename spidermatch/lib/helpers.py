@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta, date
+from datetime import date, datetime, timedelta
+
 from beartype import beartype
 
 
@@ -38,6 +39,7 @@ def split(iter, n_parts: int):
     return (
         iter[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(n_parts)
     )
+
 
 def count_terms(text: str):
     """Count the number of words in a given string."""

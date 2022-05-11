@@ -1,22 +1,25 @@
 from __future__ import annotations
-from datetime import datetime, timedelta
 
+import csv
 import re
 import sys
-import csv
+from datetime import datetime, timedelta
 from pathlib import Path
+
+from beartype import beartype
 from PyQt6 import QtWidgets, uic
-from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
-from spidermatch.worker import SearchWorker
 from qt_material import apply_stylesheet
 from zenserp import Client
-from beartype import beartype
+
+from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
+from spidermatch.worker import SearchWorker
 
 # Get working directory for pyinstaller
 try:
     WORKING_DIRECTORY = Path(sys._MEIPASS)
 except AttributeError:
     WORKING_DIRECTORY = Path.cwd()
+
 
 class WelcomeWindow(QtWidgets.QMainWindow):
     """Welcome window that asks for the API key."""
@@ -303,7 +306,6 @@ class PanelWindow(QtWidgets.QMainWindow):
         if result is not None and len(result.hits) > 0:
             self.rule_result_list.append(result)
             self.update_hits_list()
-
 
     @beartype
     def raise_error(self, error: str):

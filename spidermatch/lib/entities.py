@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 from multiprocessing.sharedctypes import Value
 from typing import NamedTuple
 
-from spidermatch.lib.helpers import generate_tbs, split, count_terms
-
 from beartype import beartype
+
+from spidermatch.lib.helpers import count_terms, generate_tbs, split
 
 
 @dataclass
@@ -59,11 +59,13 @@ class Rule:
             self.to_date.isoformat() if self.to_date else "",
         )
 
+
 class RuleTooLong(ValueError):
     def __init__(self, rule: Rule):
         self.rule = rule
         self.message = f"La regla {self.rule} es demasiado larga. Prueba dividiéndola en reglas más pequeñas o disminuyendo la cantidad de dominios."
         super().__init__(self.message)
+
 
 class SearchParameters(NamedTuple):
     """Parameters for a specific query as sent to the API."""
@@ -134,7 +136,9 @@ class SearchConfig:
 
             return [query_params]
         else:
-            assert self.sites, "Sites must be specified to split queries. Possibly not implemented."
+            assert (
+                self.sites
+            ), "Sites must be specified to split queries. Possibly not implemented."
             # Break up query into the least queries possible
             # Yeah, this is done via exhaustive search, but speed doesn't
             # seem to be an issue.

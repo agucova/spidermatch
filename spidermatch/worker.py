@@ -1,9 +1,9 @@
-from spidermatch.lib.search import generate_search_plan, search
-from spidermatch.lib.entities import Rule, RuleResult, RuleTooLong, SearchConfig
+from beartype import beartype
 from PyQt6.QtCore import QThread, pyqtSignal
 from zenserp import Client
 
-from beartype import beartype
+from spidermatch.lib.entities import Rule, RuleResult, RuleTooLong, SearchConfig
+from spidermatch.lib.search import generate_search_plan, search
 
 
 class SearchWorker(QThread):
