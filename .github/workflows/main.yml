@@ -35,6 +35,8 @@ jobs:
 
       - name: Install the Just task runner
         uses: extractions/setup-just@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test Poetry Run
         run: poetry run python -c "print('hey!')"
@@ -75,6 +77,8 @@ jobs:
 
       - name: Install the Just task runner
         uses: extractions/setup-just@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: just test
