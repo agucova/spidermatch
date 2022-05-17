@@ -37,7 +37,7 @@ class Rule:
 
     def date_str(self):
         if self.from_date and self.to_date:
-            return f"{self.from_date.strftime('%-m/%Y')} a {self.to_date.strftime('%-m/%Y')}"
+            return f"{self.from_date.strftime('%m/%Y')} a {self.to_date.strftime('%m/%Y')}"
         elif self.from_date:
             return f"desde {self.from_date.strftime('%m/%Y')}"
         elif self.to_date:

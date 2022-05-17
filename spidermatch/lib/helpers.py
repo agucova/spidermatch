@@ -8,9 +8,14 @@ def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
     if from_date or to_date:
         tbs = "cdr:1"
     if from_date:
-        tbs += "," + "cd_min:" + from_date.strftime("%-m/%-d/%Y")
+        from_day = int(from_date.strftime("%d"))
+        from_month = int(from_date.strftime("%m"))
+
+        tbs += "," + "cd_min:" + from_date.strftime(f"{from_month}/{from_day}/%Y")
     if to_date:
-        tbs += "," + "cd_max:" + to_date.strftime("%-m/%-d/%Y")
+        to_day = int(to_date.strftime("%d"))
+        to_month = int(to_date.strftime("%m"))
+        tbs += "," + "cd_max:" + to_date.strftime(f"{to_month}/{to_day}/%Y")
     return tbs
 
 
