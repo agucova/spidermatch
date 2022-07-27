@@ -64,4 +64,4 @@ windows_path := if os_family == "windows" { "spidermatch/windows/;windows/" } el
 assets_path := if os_family == "windows" { "spidermatch/assets/;assets/" } else { "spidermatch/assets/:assets/" }
 
 bundle: clean
-    poetry run pyinstaller --onefile --console --noconfirm --add-data "{{ windows_path }}" --add-data "{{ assets_path }}" -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
+    poetry run pyinstaller --onefile --windowed --noconfirm --add-data "{{ windows_path }}" --add-data "{{ assets_path }}" -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
