@@ -62,6 +62,7 @@ build: clean
 # Use the OS specific delimiters for paths in PyInstaller
 windows_path := if os_family == "windows" { "spidermatch/windows/;windows/" } else { "spidermatch/windows/:windows/" }
 assets_path := if os_family == "windows" { "spidermatch/assets/;assets/" } else { "spidermatch/assets/:assets/" }
+mode := if os_family == "windows" { "console" } else { "windowed" }
 
 bundle: clean
-    poetry run pyinstaller --onefile --windowed --noconfirm --add-data "{{ windows_path }}" --add-data "{{ assets_path }}" -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
+    poetry run pyinstaller --onefile --{{mode}} --noconfirm --add-data "{{ windows_path }}" --add-data "{{ assets_path }}" -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
