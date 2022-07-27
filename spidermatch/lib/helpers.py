@@ -1,6 +1,5 @@
+from __future__ import annotations
 from datetime import date, datetime, timedelta
-
-from beartype import beartype
 
 
 def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
@@ -19,7 +18,6 @@ def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
     return tbs
 
 
-@beartype
 def calculate_windows(
     from_date: date, to_date: date, granularity: timedelta
 ) -> list[tuple[date | datetime, date | datetime]]:

@@ -1,9 +1,8 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from multiprocessing.sharedctypes import Value
 from typing import NamedTuple
-
-from beartype import beartype
 
 from spidermatch.lib.helpers import count_terms, generate_tbs, split
 
@@ -20,7 +19,6 @@ class Rule:
     to_date: datetime | None = None
 
     @property
-    @beartype
     def time_length(self) -> timedelta | None:
         if self.from_date and self.to_date:
             return self.to_date - self.from_date
@@ -37,7 +35,9 @@ class Rule:
 
     def date_str(self):
         if self.from_date and self.to_date:
-            return f"{self.from_date.strftime('%m/%Y')} a {self.to_date.strftime('%m/%Y')}"
+            return (
+                f"{self.from_date.strftime('%m/%Y')} a {self.to_date.strftime('%m/%Y')}"
+            )
         elif self.from_date:
             return f"desde {self.from_date.strftime('%m/%Y')}"
         elif self.to_date:
@@ -72,10 +72,15 @@ class SearchParameters(NamedTuple):
 
     # (Yes, this could have been a type alias)
 
+    # Query
     q: str
+    # Host language
     hl: str
+    # Country code
     gl: str
+    # Number of results
     num: int
+    # Time-based search
     tbs: str
 
     def to_tuple(self):
@@ -87,13 +92,11 @@ class SearchParameters(NamedTuple):
             ("tbs", self.tbs),
         )
 
-
 class SearchConfig:
     """
     General configuration parameters used for searching incidents
     """
 
-    @beartype
     def __init__(
         self,
         country: str = "CL",
