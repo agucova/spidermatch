@@ -115,7 +115,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Importar sitios", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "r") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 # Sniff CSV patterns
                 try:
                     sniffer = csv.Sniffer()
@@ -159,7 +159,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Exportar sitios", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "w") as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 writer.writerow(("domain",))
                 writer.writerows(((row,) for row in self.site_list))
@@ -194,7 +194,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Importar reglas", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "r") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 # try:
                 #     # Sniff CSV patterns
                 #     sniffer = csv.Sniffer()
@@ -235,7 +235,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Exportar reglas", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "w") as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 writer.writerow(("name", "query", "from_date", "to_date"))
                 writer.writerows(rule.csv_row() for rule in self.rule_list)
@@ -341,7 +341,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Exportar resultados", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "w") as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 writer.writerow(
                     (
