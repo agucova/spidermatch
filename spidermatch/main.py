@@ -10,6 +10,7 @@ from beartype import beartype
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
 from zenserp import Client
+from rich import print
 
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from spidermatch.worker import SearchWorker
@@ -39,6 +40,7 @@ class WelcomeWindow(QtWidgets.QMainWindow):
         token_matcher = r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
         self.api_token: str = self.api_token_input.text()
         if self.api_token and re.match(token_matcher, self.api_token):
+            print(f"[bold cyan][INFO][/bold cyan] Token {self.api_token} validated.")
             self.panel = PanelWindow(self.api_token)
             self.close()
         else:
