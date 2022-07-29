@@ -77,10 +77,17 @@ def _search(
     """
     Search for a query in a domain.
     """
-    print("[bold cyan][INFO][/bold cyan] Searching for query:", params)
-    response = client.search(params.to_tuple())
+    print("[bold green][DEBUG][/bold cyan] Searching for query:", params)
+    params_tuple = params.to_tuple()
+    print("[bold green][DEBUG][/bold cyan] Generated params:", params_tuple)
+    response = client.search(params_tuple)
+    print("[bold green][DEBUG][/bold cyan] Got response:", response)
 
     if isinstance(response, Exception):
+        print(
+            "[bold red][ERROR][/bold red] Error detected in API response: ",
+            response,
+        )
         raise response
     elif response.get("error"):
         print(
