@@ -376,6 +376,8 @@ class RuleDialog(QtWidgets.QDialog):
 
 
 if __name__ == "__main__":
+    print("[bold cyan][INFO][/bold cyan] Starting SpiderMatch...")
+
     # create the application and the main window
     app = QtWidgets.QApplication(sys.argv)
     window = WelcomeWindow()
