@@ -77,11 +77,11 @@ def _search(
     """
     Search for a query in a domain.
     """
-    print("[bold green][DEBUG][/bold cyan] Searching for query:", params)
+    print("[bold green][DEBUG][/bold green] Searching for query:", params)
     params_tuple = params.to_tuple()
-    print("[bold green][DEBUG][/bold cyan] Generated params:", params_tuple)
+    print("[bold green][DEBUG][/bold green] Generated params:", params_tuple)
     response = client.search(params_tuple)
-    print("[bold green][DEBUG][/bold cyan] Got response:", response)
+    print("[bold green][DEBUG][/bold green] Got response:", response)
 
     if isinstance(response, Exception):
         print(
