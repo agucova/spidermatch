@@ -65,4 +65,4 @@ assets_path := if os_family == "windows" { "spidermatch/assets/;assets/" } else 
 mode := if os_family == "windows" { "console" } else { "windowed" }
 
 bundle: clean
-    poetry run pyinstaller --onefile --{{mode}} --noconfirm --add-data "{{ windows_path }}" --add-data "{{ assets_path }}" -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
+    MACOSX_DEPLOYMENT_TARGET=10.15 poetry run pyinstaller --onefile --{{mode}} --noconfirm --add-data "{{ windows_path }}" --add-data "{{ assets_path }}" -i spidermatch/assets/spidermatch.icns --clean --name "SpiderMatch" spidermatch/main.py
