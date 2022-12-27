@@ -9,8 +9,8 @@ from pathlib import Path
 from beartype import beartype
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from zenserp import Client
 from rich import print
+from zenserp import Client
 
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
 from spidermatch.worker import SearchWorker

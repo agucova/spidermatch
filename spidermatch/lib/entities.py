@@ -1,10 +1,10 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
-from multiprocessing.sharedctypes import Value
+from datetime import datetime, timedelta
 from typing import NamedTuple
 
-from spidermatch.lib.helpers import count_terms, generate_tbs, split
+from spidermatch.lib.helpers import generate_tbs, split
 
 
 @dataclass
@@ -91,6 +91,7 @@ class SearchParameters(NamedTuple):
             ("num", self.num),
             ("tbs", self.tbs),
         )
+
 
 class SearchConfig:
     """
