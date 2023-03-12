@@ -8,6 +8,7 @@ alias r := release
 alias b := build
 
 os_family := os_family()
+
 # Code Quality
 format:
     poetry run black .
@@ -57,7 +58,6 @@ release: build
     poetry publish
 
 build: clean
-    find . -name "*.ui" -exec sh -c 'pyuic6 "$1" -o $(basename "$1" .ui).py' sh {} \;
     poetry build
 
 # Use the OS specific delimiters for paths in PyInstaller
