@@ -100,7 +100,7 @@ ENV/
 # mypy
 .mypy_cache/
 
-# IDE settings
-.vscode/
-
 .DS_STORE
+
+.qt_for_python/
+.ruff_cache/

@@ -2,8 +2,13 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta
 
+from beartype import typing
+
 
 def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
+    if from_date and to_date and (from_date > to_date):
+        raise ValueError("from_date must be before to_date")
+
     tbs = ""
     if from_date or to_date:
         tbs = "cdr:1"
@@ -21,8 +26,15 @@ def generate_tbs(from_date: datetime | None, to_date: datetime | None) -> str:
 
 def calculate_windows(
     from_date: date, to_date: date, granularity: timedelta
-) -> list[tuple[date | datetime, date | datetime]]:
+) -> typing.List[typing.Tuple[date | datetime, date | datetime]]:
     """Divide a time period into windows of a given granularity."""
+    if to_date - from_date < timedelta(days=1):
+        raise ValueError("from_date must be before to_date")
+    if to_date - from_date < granularity:
+        raise ValueError("granularity must be smaller than the time period")
+    if granularity.days < 1:
+        raise ValueError("granularity must be at least 1 day")
+
     window_size = granularity.days
     windows = []
     for i in range(0, (to_date - from_date).days, window_size):
@@ -37,8 +49,13 @@ def calculate_windows(
     return windows
 
 
-def split(iter, n_parts: int):
+def split(iter: list, n_parts: int):
     """Splits a sequence into n parts"""
+    if n_parts == 1:
+        return [iter]
+    if n_parts == 0:
+        return []
+
     k, m = divmod(len(iter), n_parts)
     return (
         iter[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(n_parts)
@@ -47,4 +64,5 @@ def split(iter, n_parts: int):
 
 def count_terms(text: str):
     """Count the number of words in a given string."""
+    return len(text.strip().split(" OR "))
     return len(text.strip().split(" OR "))

@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 import csv
+import logging
 import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from beartype import beartype
+from beartype import beartype, typing
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from rich import print
+from rich.logging import RichHandler
 from zenserp import Client
 
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
@@ -21,12 +22,26 @@ try:
 except AttributeError:
     WORKING_DIRECTORY = Path.cwd()
 
+# Logging
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="NOTSET",
+    format=FORMAT,
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+
+log = logging.getLogger("rich")
+
+# Disable debug logging for PyQt6
+logging.getLogger("PyQt6").setLevel(logging.WARNING)
+
 
 class WelcomeWindow(QtWidgets.QMainWindow):
     """Welcome window that asks for the API key."""
 
     def __init__(self):
-        super(WelcomeWindow, self).__init__()
+        super().__init__()
         uic.loadUi(WORKING_DIRECTORY / "windows/welcome.ui", self)
         # Connect the save button to the save_token method
         self.api_save_button.clicked.connect(self.save_token)
@@ -40,25 +55,26 @@ class WelcomeWindow(QtWidgets.QMainWindow):
         token_matcher = r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
         self.api_token: str = self.api_token_input.text()
         if self.api_token and re.match(token_matcher, self.api_token):
-            print(f"[bold cyan][INFO][/bold cyan] Token {self.api_token} validated.")
+            log.info(f"Token {self.api_token} validated.")
             self.panel = PanelWindow(self.api_token)
             self.close()
         else:
             self.api_token_input.setText("")
             self.api_token_input.setPlaceholderText("Token inválido")
             QtWidgets.QMessageBox.warning(self, "Error", "Token inválido")
+            log.warning("The supplied token is invalid..")
 
 
 class PanelWindow(QtWidgets.QMainWindow):
     """Main dashboard for the app."""
 
     def __init__(self, api_token: str):
-        super(PanelWindow, self).__init__()
+        super().__init__()
 
         # Site and rule list
-        self.site_list: list[str] = []
-        self.rule_list: list[Rule] = []
-        self.rule_result_list: list[RuleResult] = []
+        self.site_list: typing.List[str] = []
+        self.rule_list: typing.List[Rule] = []
+        self.rule_result_list: typing.List[RuleResult] = []
 
         # Load the UI
         uic.loadUi(WORKING_DIRECTORY / "windows/panel.ui", self)
@@ -85,7 +101,8 @@ class PanelWindow(QtWidgets.QMainWindow):
         self.export_results_button.clicked.connect(self.export_results)
 
         # Domain validation regex
-        # From the Regular Expressions Cookbook, 2nd Edition by Jan Goyvaerts, Steven Levithan
+        # From the Regular Expressions Cookbook,
+        # 2nd Edition by Jan Goyvaerts, Steven Levithan
         self.domain_validator = re.compile(
             r"\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b$"
         )
@@ -117,7 +134,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Importar sitios", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 # Sniff CSV patterns
                 try:
                     sniffer = csv.Sniffer()
@@ -144,8 +161,10 @@ class PanelWindow(QtWidgets.QMainWindow):
                         QtWidgets.QMessageBox.warning(
                             self,
                             "Advertencia",
-                            f"Dominio inválido en la línea {i + 1} (saltado). Recuerda no usar http:// o https:// antes del dominio.",
+                            f"Dominio inválido en la línea {i + 1} (saltado). "
+                            "Recuerda no usar http:// o https:// antes del dominio.",
                         )
+                        log.warning(f"Invalid domain in line {i + 1} (skipped).")
                         errors += 1
                         if errors >= 3:
                             QtWidgets.QMessageBox.warning(
@@ -164,7 +183,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             with open(file_path, "w", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 writer.writerow(("domain",))
-                writer.writerows(((row,) for row in self.site_list))
+                writer.writerows((row,) for row in self.site_list)
 
     def add_site(self):
         site_name, ok = QtWidgets.QInputDialog.getText(
@@ -177,7 +196,14 @@ class PanelWindow(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Error",
-                    "Dominio inválido. Recuerda no usar http:// o https:// antes del dominio.",
+                    "Dominio inválido. "
+                    "Recuerda no usar http:// o https:// antes del dominio.",
+                )
+                log.warning(
+                    (
+                        "Invalid domain."
+                        "Remember to not use http:// or https:// before the domain."
+                    )
                 )
             self.update_site_list()
 
@@ -190,25 +216,17 @@ class PanelWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(
                 self, "Error", "No hay sitio seleccionado para eliminar."
             )
+            log.warning("No site selected for deletion.")
 
     def import_rules(self):
         file_path, check = QtWidgets.QFileDialog.getOpenFileName(
             self, "Importar reglas", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "r", encoding="utf-8") as f:
-                # try:
-                #     # Sniff CSV patterns
-                #     sniffer = csv.Sniffer()
-                #     dialect = sniffer.sniff(f.read(1024))
-                #     f.seek(0)
-                #     has_header = sniffer.has_header(f.read(1024))
-                #     f.seek(0)
-
-                #     # Read the actual CSV
-                #     reader = csv.reader(f, dialect)
-                # except csv.Error:
-                f.seek(0)
+            with open(file_path, encoding="utf-8") as f:
+                #  Sniffing CSV patterns seems to be unstable
+                #  with some CSV files, so we'll just use the
+                #  default dialect
                 reader = csv.reader(f)
                 has_header = True
 
@@ -228,7 +246,12 @@ class PanelWindow(QtWidgets.QMainWindow):
                         QtWidgets.QMessageBox.warning(
                             self,
                             "Error",
-                            f"Regla inválida en la línea {i + 1}. Recuerda que el CSV de reglas debe tener 4 columnas.",
+                            f"Regla inválida en la línea {i + 1}. "
+                            "Recuerda que el CSV de reglas debe tener 4 columnas.",
+                        )
+                        log.warning(
+                            f"Invalid rule in line {i + 1}. "
+                            "Remember that the rules CSV must have 4 columns."
                         )
             self.update_rule_list()
 
@@ -258,12 +281,12 @@ class PanelWindow(QtWidgets.QMainWindow):
         selected_row = self.rule_list_view.currentRow()
         if 0 <= selected_row < len(self.rule_list):
             dialog = RuleDialog()
-            dialog.name_input.setText(self.rule_list[selected_row].name)
-            dialog.query_input.setPlainText(self.rule_list[selected_row].query)
-            dialog.from_input.setDate(self.rule_list[selected_row].from_date)
-            dialog.to_input.setDate(self.rule_list[selected_row].to_date)
+            dialog.name_input.setText(self.rule_typing.List[selected_row].name)
+            dialog.query_input.setPlainText(self.rule_typing.List[selected_row].query)
+            dialog.from_input.setDate(self.rule_typing.List[selected_row].from_date)
+            dialog.to_input.setDate(self.rule_typing.List[selected_row].to_date)
             if dialog.exec():
-                self.rule_list[selected_row] = Rule(
+                self.rule_typing.List[selected_row] = Rule(
                     dialog.name_input.text(),
                     dialog.query_input.toPlainText(),
                     dialog.from_input.date().toPyDate(),
@@ -280,6 +303,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(
                 self, "Error", "No hay regla seleccionada para eliminar."
             )
+            log.warning("No rule selected for deletions.")
 
     def validate_config(self) -> bool:
         try:
@@ -291,6 +315,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(
                 self, "Error", "Configuración incompleta o inválida."
             )
+            log.warning("Incomplete or invalid configuration.")
             return False
         return True
 
@@ -303,7 +328,10 @@ class PanelWindow(QtWidgets.QMainWindow):
 
     @beartype
     def receive_search_progress(self, progress: int, result: RuleResult):
-        """Receiver for progress signals from the search worker. Updates the progress bar."""
+        """
+        Receiver for progress signals from the search worker.
+        Updates the progress bar.
+        """
         self.progress_bar.setValue(progress)
         if result is not None and len(result.hits) > 0:
             self.rule_result_list.append(result)
@@ -313,6 +341,7 @@ class PanelWindow(QtWidgets.QMainWindow):
     def raise_error(self, error: str):
         # Raise a generic QT error dialog
         QtWidgets.QMessageBox.warning(self, "API Error", error)
+        log.error(error)
 
     def start_search(self):
         """Main search function. Starts the search worker and connects its signals."""
@@ -367,7 +396,7 @@ class RuleDialog(QtWidgets.QDialog):
     """Dialog for adding and editing rules."""
 
     def __init__(self, parent=None):
-        super(RuleDialog, self).__init__(parent)
+        super().__init__(parent)
 
         # Load the UI
         uic.loadUi(WORKING_DIRECTORY / "windows/rule.ui", self)
@@ -375,8 +404,9 @@ class RuleDialog(QtWidgets.QDialog):
         self.show()
 
 
-if __name__ == "__main__":
-    print("[bold cyan][INFO][/bold cyan] Starting SpiderMatch...")
+def run():
+    # This is the entry point for the application.
+    log.info("Starting SpiderMatch...")
 
     # create the application and the main window
     app = QtWidgets.QApplication(sys.argv)
@@ -388,3 +418,8 @@ if __name__ == "__main__":
     # run
     window.show()
     app.exec()
+    app.exec()
+
+
+if __name__ == "__main__":
+    run()

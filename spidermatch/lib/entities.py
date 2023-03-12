@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import NamedTuple
 
+from beartype import typing
+
 from spidermatch.lib.helpers import generate_tbs, split
 
 
@@ -59,11 +61,19 @@ class Rule:
             self.to_date.isoformat() if self.to_date else "",
         )
 
+    def __post_init__(self):
+        if (self.from_date and self.to_date) and (self.from_date > self.to_date):
+            raise ValueError("Start date must be before end date")
+
 
 class RuleTooLong(ValueError):
     def __init__(self, rule: Rule):
         self.rule = rule
-        self.message = f"La regla {self.rule} es demasiado larga. Prueba dividiéndola en reglas más pequeñas o disminuyendo la cantidad de dominios."
+        self.message = (
+            f"La regla {self.rule} es demasiado larga. "
+            "Prueba dividiéndola en reglas más pequeñas "
+            "o disminuyendo la cantidad de dominios."
+        )
         super().__init__(self.message)
 
 
@@ -105,7 +115,7 @@ class SearchConfig:
         domain: str = "google.cl",
         limit: int = 10,
         granularity: timedelta = timedelta(days=180),
-        sites: list[str] | None = None,
+        sites: typing.List[str] | None = None,
     ):
         self.country = country.upper()
         self.language = language.lower()
@@ -119,7 +129,7 @@ class SearchConfig:
         rule: Rule,
         from_date: datetime | None = None,
         to_date: datetime | None = None,
-    ) -> list[SearchParameters]:
+    ) -> typing.List[SearchParameters]:
         from_date = from_date if from_date else rule.from_date
         to_date = to_date if to_date else rule.to_date
         query = rule.query
@@ -196,7 +206,10 @@ class Hit:
     date: str | None
 
     def __str__(self):
-        return f"{self.title} ({self.description[:60] + ('...' if len(self.description) > 60 else '')})"
+        return (
+            f"{self.title} "
+            f"({self.description[:60] + ('...' if len(self.description) > 60 else '')})"
+        )
 
     def csv_row(self):
         return (
@@ -216,4 +229,5 @@ class RuleResult:
     """
 
     rule: Rule
-    hits: list[Hit]
+    hits: typing.List[Hit]
+    hits: typing.List[Hit]
