@@ -103,3 +103,4 @@ ENV/
 .DS_STORE
 
 .qt_for_python/
+.ruff_cache/

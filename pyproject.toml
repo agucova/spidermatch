@@ -51,6 +51,9 @@ Pillow = "^9.1.0"
 
 [tool.poetry.scripts]
 
+[tool.poetry.group.dev.dependencies]
+hypothesis = "^6.68.2"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"

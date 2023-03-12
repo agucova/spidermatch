@@ -27,7 +27,8 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
     """
     Generate the list of queries needed to be run for a given set of rules and a config.
 
-    We automatically split queries in their temporal space by their granularity, and split them by length if necessary to satisfy API constraints.
+    We automatically split queries in their temporal space by their granularity,
+    and split them by length if necessary to satisfy API constraints.
     """
 
     search_plan: list[SearchQuery] = []
@@ -42,7 +43,8 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
                     # This is were we split into multiple queries
                     # if maximum query length is exceeded
                     params = config.generate_params(rule, from_date, to_date)
-                    # Each item in params is a distinct set of query parameters for a specific search
+                    # Each item in params is a distinct
+                    # set of query parameters for a specific search
                     search_plan.extend(
                         SearchQuery(rule, param, from_date, to_date) for param in params
                     )
@@ -59,9 +61,6 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
             raise NotImplementedError(
                 "Rule must have from_date and to_date. Not implemented yet."
             )
-    print(
-        f"[bold cyan][INFO][/bold cyan] Generated search plan with a total of {len(search_plan)} queries."
-    )
     return search_plan
 
 
@@ -98,12 +97,14 @@ def _search(
 
     if period_results is None:
         print(
-            f"[bold yellow][WARN][/bold yellow] No results found for rule '{rule.name}' between {from_date} and {to_date}, skipping."
+            f"[bold yellow][WARN][/bold yellow] No results found for rule "
+            f"'{rule.name}' between {from_date} and {to_date}, skipping."
         )
         return []
 
     print(
-        f"[bold cyan][INFO][/bold cyan] Found {len(period_results)} results for rule '{rule.name}' between {from_date} and {to_date}."
+        f"[bold cyan][INFO][/bold cyan] Found {len(period_results)} results for rule "
+        f"'{rule.name}' between {from_date} and {to_date}."
     )
 
     hits: list[Hit] = []

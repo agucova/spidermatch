@@ -85,7 +85,8 @@ class PanelWindow(QtWidgets.QMainWindow):
         self.export_results_button.clicked.connect(self.export_results)
 
         # Domain validation regex
-        # From the Regular Expressions Cookbook, 2nd Edition by Jan Goyvaerts, Steven Levithan
+        # From the Regular Expressions Cookbook,
+        # 2nd Edition by Jan Goyvaerts, Steven Levithan
         self.domain_validator = re.compile(
             r"\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b$"
         )
@@ -144,7 +145,8 @@ class PanelWindow(QtWidgets.QMainWindow):
                         QtWidgets.QMessageBox.warning(
                             self,
                             "Advertencia",
-                            f"Dominio inválido en la línea {i + 1} (saltado). Recuerda no usar http:// o https:// antes del dominio.",
+                            f"Dominio inválido en la línea {i + 1} (saltado). "
+                            "Recuerda no usar http:// o https:// antes del dominio.",
                         )
                         errors += 1
                         if errors >= 3:
@@ -177,7 +179,8 @@ class PanelWindow(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Error",
-                    "Dominio inválido. Recuerda no usar http:// o https:// antes del dominio.",
+                    "Dominio inválido. "
+                    "Recuerda no usar http:// o https:// antes del dominio.",
                 )
             self.update_site_list()
 
@@ -197,18 +200,9 @@ class PanelWindow(QtWidgets.QMainWindow):
         )
         if check:
             with open(file_path, encoding="utf-8") as f:
-                # try:
-                #     # Sniff CSV patterns
-                #     sniffer = csv.Sniffer()
-                #     dialect = sniffer.sniff(f.read(1024))
-                #     f.seek(0)
-                #     has_header = sniffer.has_header(f.read(1024))
-                #     f.seek(0)
-
-                #     # Read the actual CSV
-                #     reader = csv.reader(f, dialect)
-                # except csv.Error:
-                f.seek(0)
+                #  Sniffing CSV patterns seems to be unstable
+                #  with some CSV files, so we'll just use the
+                #  default dialect
                 reader = csv.reader(f)
                 has_header = True
 
@@ -228,7 +222,8 @@ class PanelWindow(QtWidgets.QMainWindow):
                         QtWidgets.QMessageBox.warning(
                             self,
                             "Error",
-                            f"Regla inválida en la línea {i + 1}. Recuerda que el CSV de reglas debe tener 4 columnas.",
+                            f"Regla inválida en la línea {i + 1}. "
+                            "Recuerda que el CSV de reglas debe tener 4 columnas.",
                         )
             self.update_rule_list()
 
@@ -303,7 +298,10 @@ class PanelWindow(QtWidgets.QMainWindow):
 
     @beartype
     def receive_search_progress(self, progress: int, result: RuleResult):
-        """Receiver for progress signals from the search worker. Updates the progress bar."""
+        """
+        Receiver for progress signals from the search worker.
+        Updates the progress bar.
+        """
         self.progress_bar.setValue(progress)
         if result is not None and len(result.hits) > 0:
             self.rule_result_list.append(result)

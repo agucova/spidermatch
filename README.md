@@ -9,4 +9,3 @@ covered by local news in a certain country. Used for OSINT
 investigations in policing.
 
 This app is free software under the GNU General Public License v3.
-

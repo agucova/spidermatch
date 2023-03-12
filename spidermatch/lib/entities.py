@@ -59,6 +59,10 @@ class Rule:
             self.to_date.isoformat() if self.to_date else "",
         )
 
+    def __post_init__(self):
+        if (self.from_date and self.to_date) and (self.from_date > self.to_date):
+            raise ValueError("Start date must be before end date")
+
 
 class RuleTooLong(ValueError):
     def __init__(self, rule: Rule):
