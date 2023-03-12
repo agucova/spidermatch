@@ -404,7 +404,8 @@ class RuleDialog(QtWidgets.QDialog):
         self.show()
 
 
-if __name__ == "__main__":
+def run():
+    # This is the entry point for the application.
     log.info("Starting SpiderMatch...")
 
     # create the application and the main window
@@ -418,3 +419,7 @@ if __name__ == "__main__":
     window.show()
     app.exec()
     app.exec()
+
+
+if __name__ == "__main__":
+    run()
