@@ -1,10 +1,20 @@
+"""
+Search module.
+
+The high-level view of this module is that:
+1. We generate a search plan that automatically creates all
+the queries needed to search for all the rules.
+2. The (UI) search workers dispatchs each search based on the plan.
+
+"""
+
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 
 import zenserp
 from beartype import beartype
-from rich import print
 
 from spidermatch.lib.entities import (
     Hit,
@@ -16,10 +26,7 @@ from spidermatch.lib.entities import (
 )
 from spidermatch.lib.helpers import calculate_windows
 
-# The high-level view of this is that
-# 1. We generate a search plan that automatically creates all
-# the queries needed to search for all the rules
-# 2. The (UI) search workers dispatchs each search based on the plan
+log = logging.getLogger("rich")
 
 
 @beartype
@@ -74,36 +81,33 @@ def _search(
     """
     Search for a query in a domain.
     """
-    print("[bold green][DEBUG][/bold green] Searching for query:", params)
+    log.debug("Searching for query: %s", params)
     params_tuple = params.to_tuple()
-    print("[bold green][DEBUG][/bold green] Generated params:", params_tuple)
+    log.debug("Generated params: %s", params_tuple)
     response = client.search(params_tuple)
-    print("[bold green][DEBUG][/bold green] Got response:", response)
+    log.debug("Got response: %s", response)
 
     if isinstance(response, Exception):
-        print(
-            "[bold red][ERROR][/bold red] Error detected in API response: ",
-            response,
+        log.exception(
+            "Error detected in API response.",
+            exc_info=response,
         )
         raise response
     elif response.get("error"):
-        print(
-            "[bold red][ERROR][/bold red] Error detected in API response: ",
-            response["error"],
-        )
+        log.error("Error detected in API response %s", response["error"])
         raise ValueError(response["error"])
 
     period_results = response.get("organic")
 
     if period_results is None:
-        print(
-            f"[bold yellow][WARN][/bold yellow] No results found for rule "
+        log.info(
+            f"No results found for rule "
             f"'{rule.name}' between {from_date} and {to_date}, skipping."
         )
         return []
 
-    print(
-        f"[bold cyan][INFO][/bold cyan] Found {len(period_results)} results for rule "
+    log.info(
+        f"Found {len(period_results)} results for rule "
         f"'{rule.name}' between {from_date} and {to_date}."
     )
 
@@ -144,4 +148,5 @@ def get_remaining_requests(client: zenserp.Client) -> int:
     """
     Get the number of remaining requests.
     """
+    return client.status()["remaining_requests"]
     return client.status()["remaining_requests"]

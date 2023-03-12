@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import logging
 import re
 import sys
 from datetime import datetime, timedelta
@@ -9,7 +10,7 @@ from pathlib import Path
 from beartype import beartype
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
-from rich import print
+from rich.logging import RichHandler
 from zenserp import Client
 
 from spidermatch.lib.entities import Rule, RuleResult, SearchConfig
@@ -20,6 +21,20 @@ try:
     WORKING_DIRECTORY = Path(sys._MEIPASS)  # type: ignore
 except AttributeError:
     WORKING_DIRECTORY = Path.cwd()
+
+# Logging
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="NOTSET",
+    format=FORMAT,
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+
+log = logging.getLogger("rich")
+
+# Disable debug logging for PyQt6
+logging.getLogger("PyQt6").setLevel(logging.WARNING)
 
 
 class WelcomeWindow(QtWidgets.QMainWindow):
@@ -40,13 +55,14 @@ class WelcomeWindow(QtWidgets.QMainWindow):
         token_matcher = r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
         self.api_token: str = self.api_token_input.text()
         if self.api_token and re.match(token_matcher, self.api_token):
-            print(f"[bold cyan][INFO][/bold cyan] Token {self.api_token} validated.")
+            log.info(f"Token {self.api_token} validated.")
             self.panel = PanelWindow(self.api_token)
             self.close()
         else:
             self.api_token_input.setText("")
             self.api_token_input.setPlaceholderText("Token inválido")
             QtWidgets.QMessageBox.warning(self, "Error", "Token inválido")
+            log.warning("The supplied token is invalid..")
 
 
 class PanelWindow(QtWidgets.QMainWindow):
@@ -148,6 +164,7 @@ class PanelWindow(QtWidgets.QMainWindow):
                             f"Dominio inválido en la línea {i + 1} (saltado). "
                             "Recuerda no usar http:// o https:// antes del dominio.",
                         )
+                        log.warning(f"Invalid domain in line {i + 1} (skipped).")
                         errors += 1
                         if errors >= 3:
                             QtWidgets.QMessageBox.warning(
@@ -182,6 +199,12 @@ class PanelWindow(QtWidgets.QMainWindow):
                     "Dominio inválido. "
                     "Recuerda no usar http:// o https:// antes del dominio.",
                 )
+                log.warning(
+                    (
+                        "Invalid domain."
+                        "Remember to not use http:// or https:// before the domain."
+                    )
+                )
             self.update_site_list()
 
     def delete_site(self):
@@ -193,6 +216,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(
                 self, "Error", "No hay sitio seleccionado para eliminar."
             )
+            log.warning("No site selected for deletion.")
 
     def import_rules(self):
         file_path, check = QtWidgets.QFileDialog.getOpenFileName(
@@ -224,6 +248,10 @@ class PanelWindow(QtWidgets.QMainWindow):
                             "Error",
                             f"Regla inválida en la línea {i + 1}. "
                             "Recuerda que el CSV de reglas debe tener 4 columnas.",
+                        )
+                        log.warning(
+                            f"Invalid rule in line {i + 1}. "
+                            "Remember that the rules CSV must have 4 columns."
                         )
             self.update_rule_list()
 
@@ -275,6 +303,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(
                 self, "Error", "No hay regla seleccionada para eliminar."
             )
+            log.warning("No rule selected for deletions.")
 
     def validate_config(self) -> bool:
         try:
@@ -286,6 +315,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(
                 self, "Error", "Configuración incompleta o inválida."
             )
+            log.warning("Incomplete or invalid configuration.")
             return False
         return True
 
@@ -311,6 +341,7 @@ class PanelWindow(QtWidgets.QMainWindow):
     def raise_error(self, error: str):
         # Raise a generic QT error dialog
         QtWidgets.QMessageBox.warning(self, "API Error", error)
+        log.error(error)
 
     def start_search(self):
         """Main search function. Starts the search worker and connects its signals."""
@@ -374,7 +405,7 @@ class RuleDialog(QtWidgets.QDialog):
 
 
 if __name__ == "__main__":
-    print("[bold cyan][INFO][/bold cyan] Starting SpiderMatch...")
+    log.info("Starting SpiderMatch...")
 
     # create the application and the main window
     app = QtWidgets.QApplication(sys.argv)
@@ -385,4 +416,5 @@ if __name__ == "__main__":
 
     # run
     window.show()
+    app.exec()
     app.exec()
