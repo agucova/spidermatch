@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from hypothesis import strategies as st
 
-from spidermatch.lib.entities import Rule
+from spidermatch.lib.entities import Hit, Rule
 
 
 @st.composite
@@ -22,3 +22,22 @@ def rules(draw):
         to_date = None
 
     return Rule(name=name, query=query, from_date=from_date, to_date=to_date)
+
+
+@st.composite
+def hits(draw):
+    title = draw(st.text())
+    url = draw(st.text())
+    position = draw(st.integers(min_value=1))
+    destination = draw(st.text())
+    description = draw(st.text())
+    date = draw(st.one_of(st.none(), st.text()))
+
+    return Hit(
+        title=title,
+        url=url,
+        position=position,
+        destination=destination,
+        description=description,
+        date=date,
+    )

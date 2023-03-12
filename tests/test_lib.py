@@ -13,7 +13,7 @@ from hypothesis import strategies as st
 import spidermatch.lib.entities
 from spidermatch.lib.entities import Hit, Rule, SearchParameters
 
-from .helpers import rules
+from .helpers import hits, rules
 
 
 @given(
@@ -81,7 +81,7 @@ def test_fuzz_Rule(
 
 @given(
     rule=rules(),
-    hits=st.lists(st.builds(Hit)),
+    hits=st.lists(hits()),
 )
 def test_fuzz_RuleResult(
     rule: Rule,
