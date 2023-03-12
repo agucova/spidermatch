@@ -7,11 +7,9 @@
 
 
 > **Note**
-> This app is currently in spanish only. English version coming soon.
+> This app is currently available in Spanish only. An Eglish version is coming soon.
 
 An open-source app for setting up search engine lookups for incidents covered by local news in a certain country. This app is used for criminology research in policing.
-
-This app is free software under the GNU General Public License v3.
 
 ## Installation
 The app is available on PyPI, so you can install it with pip:
@@ -26,3 +24,9 @@ You can find them in the [releases](https://github.com/agucova/spidermatch/relea
 ## Usage
 
 This app integrates with ZenSerp, a search engine API. You will need to create an account and get an API key. You can do so [here](https://zenserp.com/).
+
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+This project is licensed under the terms of the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) license. See [LICENSE](LICENSE) for more information.
