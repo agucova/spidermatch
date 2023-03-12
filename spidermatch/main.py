@@ -7,7 +7,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from beartype import beartype
+from beartype import beartype, typing
 from PyQt6 import QtWidgets, uic
 from qt_material import apply_stylesheet
 from rich.logging import RichHandler
@@ -72,9 +72,9 @@ class PanelWindow(QtWidgets.QMainWindow):
         super().__init__()
 
         # Site and rule list
-        self.site_list: list[str] = []
-        self.rule_list: list[Rule] = []
-        self.rule_result_list: list[RuleResult] = []
+        self.site_list: typing.List[str] = []
+        self.rule_list: typing.List[Rule] = []
+        self.rule_result_list: typing.List[RuleResult] = []
 
         # Load the UI
         uic.loadUi(WORKING_DIRECTORY / "windows/panel.ui", self)
@@ -281,12 +281,12 @@ class PanelWindow(QtWidgets.QMainWindow):
         selected_row = self.rule_list_view.currentRow()
         if 0 <= selected_row < len(self.rule_list):
             dialog = RuleDialog()
-            dialog.name_input.setText(self.rule_list[selected_row].name)
-            dialog.query_input.setPlainText(self.rule_list[selected_row].query)
-            dialog.from_input.setDate(self.rule_list[selected_row].from_date)
-            dialog.to_input.setDate(self.rule_list[selected_row].to_date)
+            dialog.name_input.setText(self.rule_typing.List[selected_row].name)
+            dialog.query_input.setPlainText(self.rule_typing.List[selected_row].query)
+            dialog.from_input.setDate(self.rule_typing.List[selected_row].from_date)
+            dialog.to_input.setDate(self.rule_typing.List[selected_row].to_date)
             if dialog.exec():
-                self.rule_list[selected_row] = Rule(
+                self.rule_typing.List[selected_row] = Rule(
                     dialog.name_input.text(),
                     dialog.query_input.toPlainText(),
                     dialog.from_input.date().toPyDate(),

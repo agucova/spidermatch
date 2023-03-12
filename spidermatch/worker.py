@@ -1,4 +1,4 @@
-from beartype import beartype
+from beartype import beartype, typing
 from PyQt6.QtCore import QThread, pyqtSignal
 from zenserp import Client
 
@@ -12,7 +12,7 @@ class SearchWorker(QThread):
     error = pyqtSignal(str)
 
     @beartype
-    def __init__(self, client: Client, config: SearchConfig, rules: list[Rule]):
+    def __init__(self, client: Client, config: SearchConfig, rules: typing.List[Rule]):
         super().__init__()
         self.client = client
         self.params = config

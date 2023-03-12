@@ -14,7 +14,7 @@ import logging
 from datetime import datetime
 
 import zenserp
-from beartype import beartype
+from beartype import beartype, typing
 
 from spidermatch.lib.entities import (
     Hit,
@@ -30,7 +30,9 @@ log = logging.getLogger("rich")
 
 
 @beartype
-def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[SearchQuery]:
+def generate_search_plan(
+    rules: typing.List[Rule], config: SearchConfig
+) -> typing.List[SearchQuery]:
     """
     Generate the list of queries needed to be run for a given set of rules and a config.
 
@@ -38,7 +40,7 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
     and split them by length if necessary to satisfy API constraints.
     """
 
-    search_plan: list[SearchQuery] = []
+    search_plan: typing.List[SearchQuery] = []
     for rule in rules:
         if rule.from_date and rule.to_date:
             assert rule.time_length
@@ -77,7 +79,7 @@ def _search(
     params: SearchParameters,
     from_date: datetime | None = None,
     to_date: datetime | None = None,
-) -> list[Hit]:
+) -> typing.List[Hit]:
     """
     Search for a query in a domain.
     """
@@ -111,7 +113,7 @@ def _search(
         f"'{rule.name}' between {from_date} and {to_date}."
     )
 
-    hits: list[Hit] = []
+    hits: typing.List[Hit] = []
     for hit in period_results:
         if hit.get("questions") or hit.get("news"):
             continue

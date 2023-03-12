@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import datetime
-import typing
 
 import pytest
+from beartype import typing
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -85,7 +85,7 @@ def test_fuzz_Rule(
 )
 def test_fuzz_RuleResult(
     rule: Rule,
-    hits: list[Hit],
+    hits: typing.List[Hit],
 ) -> None:
     spidermatch.lib.entities.RuleResult(rule=rule, hits=hits)
 

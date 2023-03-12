@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import NamedTuple
 
+from beartype import typing
+
 from spidermatch.lib.helpers import generate_tbs, split
 
 
@@ -113,7 +115,7 @@ class SearchConfig:
         domain: str = "google.cl",
         limit: int = 10,
         granularity: timedelta = timedelta(days=180),
-        sites: list[str] | None = None,
+        sites: typing.List[str] | None = None,
     ):
         self.country = country.upper()
         self.language = language.lower()
@@ -127,7 +129,7 @@ class SearchConfig:
         rule: Rule,
         from_date: datetime | None = None,
         to_date: datetime | None = None,
-    ) -> list[SearchParameters]:
+    ) -> typing.List[SearchParameters]:
         from_date = from_date if from_date else rule.from_date
         to_date = to_date if to_date else rule.to_date
         query = rule.query
@@ -227,4 +229,5 @@ class RuleResult:
     """
 
     rule: Rule
-    hits: list[Hit]
+    hits: typing.List[Hit]
+    hits: typing.List[Hit]
