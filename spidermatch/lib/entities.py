@@ -63,7 +63,11 @@ class Rule:
 class RuleTooLong(ValueError):
     def __init__(self, rule: Rule):
         self.rule = rule
-        self.message = f"La regla {self.rule} es demasiado larga. Prueba dividiéndola en reglas más pequeñas o disminuyendo la cantidad de dominios."
+        self.message = (
+            f"La regla {self.rule} es demasiado larga. "
+            "Prueba dividiéndola en reglas más pequeñas "
+            "o disminuyendo la cantidad de dominios."
+        )
         super().__init__(self.message)
 
 
@@ -196,7 +200,10 @@ class Hit:
     date: str | None
 
     def __str__(self):
-        return f"{self.title} ({self.description[:60] + ('...' if len(self.description) > 60 else '')})"
+        return (
+            f"{self.title} "
+            f"({self.description[:60] + ('...' if len(self.description) > 60 else '')})"
+        )
 
     def csv_row(self):
         return (

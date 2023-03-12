@@ -14,7 +14,7 @@ format:
     poetry run isort .
 
 lint: format
-    poetry run flake8 spidermatch/ tests/
+    poetry run ruff check spidermatch/ tests/
 
 test:
     poetry run pytest
@@ -28,36 +28,37 @@ open-in-browser file:
 
 
 coverage: && (open-in-browser "htmlcov/index.html")
-	poetry run coverage run --source spidermatch -m pytest
-	poetry run coverage report -m
-	poetry run coverage html
+    poetry run coverage run --source spidermatch -m pytest
+    poetry run coverage report -m
+    poetry run coverage html
 
 # Building and publishing
 clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+    rm -fr build/
+    rm -fr dist/
+    rm -fr .eggs/
+    find . -name '*.egg-info' -exec rm -fr {} +
+    find . -name '*.egg' -exec rm -f {} +
 
 clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+    find . -name '*.pyc' -exec rm -f {} +
+    find . -name '*.pyo' -exec rm -f {} +
+    find . -name '*~' -exec rm -f {} +
+    find . -name '__pycache__' -exec rm -fr {} +
 
 clean-test:
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
+    rm -f .coverage
+    rm -fr htmlcov/
+    rm -fr .pytest_cache
 
 clean: clean-build clean-pyc clean-test
 
 release: build
-	poetry publish
+    poetry publish
 
 build: clean
-	poetry build
+    find . -name "*.ui" -exec sh -c 'pyuic6 "$1" -o $(basename "$1" .ui).py' sh {} \;
+    poetry build
 
 # Use the OS specific delimiters for paths in PyInstaller
 windows_path := if os_family == "windows" { "spidermatch/windows/;windows/" } else { "spidermatch/windows/:windows/" }

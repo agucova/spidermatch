@@ -56,10 +56,8 @@ def generate_search_plan(rules: list[Rule], config: SearchConfig) -> list[Search
                     SearchQuery(rule, param, None, None) for param in params
                 )
         else:
-            raise (
-                NotImplementedError(
-                    "Rule must have from_date and to_date. Not implemented yet."
-                )
+            raise NotImplementedError(
+                "Rule must have from_date and to_date. Not implemented yet."
             )
     print(
         f"[bold cyan][INFO][/bold cyan] Generated search plan with a total of {len(search_plan)} queries."
@@ -94,7 +92,7 @@ def _search(
             "[bold red][ERROR][/bold red] Error detected in API response: ",
             response["error"],
         )
-        raise (ValueError(response["error"]))
+        raise ValueError(response["error"])
 
     period_results = response.get("organic")
 

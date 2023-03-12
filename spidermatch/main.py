@@ -26,7 +26,7 @@ class WelcomeWindow(QtWidgets.QMainWindow):
     """Welcome window that asks for the API key."""
 
     def __init__(self):
-        super(WelcomeWindow, self).__init__()
+        super().__init__()
         uic.loadUi(WORKING_DIRECTORY / "windows/welcome.ui", self)
         # Connect the save button to the save_token method
         self.api_save_button.clicked.connect(self.save_token)
@@ -53,7 +53,7 @@ class PanelWindow(QtWidgets.QMainWindow):
     """Main dashboard for the app."""
 
     def __init__(self, api_token: str):
-        super(PanelWindow, self).__init__()
+        super().__init__()
 
         # Site and rule list
         self.site_list: list[str] = []
@@ -117,7 +117,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Importar sitios", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 # Sniff CSV patterns
                 try:
                     sniffer = csv.Sniffer()
@@ -164,7 +164,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             with open(file_path, "w", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 writer.writerow(("domain",))
-                writer.writerows(((row,) for row in self.site_list))
+                writer.writerows((row,) for row in self.site_list)
 
     def add_site(self):
         site_name, ok = QtWidgets.QInputDialog.getText(
@@ -196,7 +196,7 @@ class PanelWindow(QtWidgets.QMainWindow):
             self, "Importar reglas", "", "CSV (*.csv)"
         )
         if check:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 # try:
                 #     # Sniff CSV patterns
                 #     sniffer = csv.Sniffer()
@@ -367,7 +367,7 @@ class RuleDialog(QtWidgets.QDialog):
     """Dialog for adding and editing rules."""
 
     def __init__(self, parent=None):
-        super(RuleDialog, self).__init__(parent)
+        super().__init__(parent)
 
         # Load the UI
         uic.loadUi(WORKING_DIRECTORY / "windows/rule.ui", self)

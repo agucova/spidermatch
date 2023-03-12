@@ -9,34 +9,52 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_PanelWindow(object):
+class Ui_PanelWindow:
     def setupUi(self, PanelWindow):
         PanelWindow.setObjectName("PanelWindow")
         PanelWindow.resize(1500, 1000)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(PanelWindow.sizePolicy().hasHeightForWidth())
         PanelWindow.setSizePolicy(sizePolicy)
         PanelWindow.setMinimumSize(QtCore.QSize(1500, 1000))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("/Users/agucova/Repos/spidermatch/spidermatch/windows/../assets/icon_teal.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(
+            QtGui.QPixmap(
+                "/Users/agucova/Repos/spidermatch/spidermatch/windows/../assets/icon_teal.png"
+            ),
+            QtGui.QIcon.Mode.Normal,
+            QtGui.QIcon.State.Off,
+        )
         PanelWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(PanelWindow)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.centralwidget.sizePolicy().hasHeightForWidth()
+        )
         self.centralwidget.setSizePolicy(sizePolicy)
         self.centralwidget.setMinimumSize(QtCore.QSize(1500, 800))
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
         self.config_group_box = QtWidgets.QGroupBox(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.config_group_box.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.config_group_box.sizePolicy().hasHeightForWidth()
+        )
         self.config_group_box.setSizePolicy(sizePolicy)
         self.config_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.config_group_box.setObjectName("config_group_box")
@@ -53,40 +71,60 @@ class Ui_PanelWindow(object):
         self.formLayout.setObjectName("formLayout")
         self.label = QtWidgets.QLabel(self.formLayoutWidget)
         self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label
+        )
         self.country_input = QtWidgets.QLineEdit(self.formLayoutWidget)
         self.country_input.setObjectName("country_input")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.country_input)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.country_input
+        )
         self.label_4 = QtWidgets.QLabel(self.formLayoutWidget)
         self.label_4.setObjectName("label_4")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_4)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_4
+        )
         self.domain_input = QtWidgets.QLineEdit(self.formLayoutWidget)
         self.domain_input.setObjectName("domain_input")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.domain_input)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.domain_input
+        )
         self.label_2 = QtWidgets.QLabel(self.formLayoutWidget)
         self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_2)
+        self.formLayout.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_2
+        )
         self.language_input = QtWidgets.QLineEdit(self.formLayoutWidget)
         self.language_input.setObjectName("language_input")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.language_input)
+        self.formLayout.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.language_input
+        )
         self.label_3 = QtWidgets.QLabel(self.formLayoutWidget)
         self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_3)
+        self.formLayout.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_3
+        )
         self.limit_input = QtWidgets.QSpinBox(self.formLayoutWidget)
         self.limit_input.setMinimum(10)
         self.limit_input.setMaximum(100)
         self.limit_input.setSingleStep(10)
         self.limit_input.setObjectName("limit_input")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.limit_input)
+        self.formLayout.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.limit_input
+        )
         self.label_5 = QtWidgets.QLabel(self.formLayoutWidget)
         self.label_5.setObjectName("label_5")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_5)
+        self.formLayout.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_5
+        )
         self.granularity_input = QtWidgets.QSpinBox(self.formLayoutWidget)
         self.granularity_input.setMinimum(1)
         self.granularity_input.setMaximum(600)
         self.granularity_input.setSingleStep(1)
         self.granularity_input.setObjectName("granularity_input")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.granularity_input)
+        self.formLayout.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.granularity_input
+        )
         self.config_tabs.addTab(self.searchTab, "")
         self.start_search_button = QtWidgets.QPushButton(self.config_group_box)
         self.start_search_button.setGeometry(QtCore.QRect(20, 400, 181, 51))
@@ -96,10 +134,15 @@ class Ui_PanelWindow(object):
         self.progress_bar.setObjectName("progress_bar")
         self.gridLayout.addWidget(self.config_group_box, 1, 0, 1, 1)
         self.sites_group_box = QtWidgets.QGroupBox(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sites_group_box.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.sites_group_box.sizePolicy().hasHeightForWidth()
+        )
         self.sites_group_box.setSizePolicy(sizePolicy)
         self.sites_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.sites_group_box.setObjectName("sites_group_box")
@@ -129,10 +172,15 @@ class Ui_PanelWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.gridLayout.addWidget(self.sites_group_box, 0, 0, 1, 1)
         self.rules_group_box = QtWidgets.QGroupBox(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rules_group_box.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.rules_group_box.sizePolicy().hasHeightForWidth()
+        )
         self.rules_group_box.setSizePolicy(sizePolicy)
         self.rules_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.rules_group_box.setObjectName("rules_group_box")
@@ -165,10 +213,15 @@ class Ui_PanelWindow(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.gridLayout.addWidget(self.rules_group_box, 0, 1, 1, 1)
         self.hits_group_box = QtWidgets.QGroupBox(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.hits_group_box.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.hits_group_box.sizePolicy().hasHeightForWidth()
+        )
         self.hits_group_box.setSizePolicy(sizePolicy)
         self.hits_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.hits_group_box.setObjectName("hits_group_box")
@@ -212,7 +265,9 @@ class Ui_PanelWindow(object):
 
     def retranslateUi(self, PanelWindow):
         _translate = QtCore.QCoreApplication.translate
-        PanelWindow.setWindowTitle(_translate("PanelWindow", "Main Panel | SpiderMatch"))
+        PanelWindow.setWindowTitle(
+            _translate("PanelWindow", "Main Panel | SpiderMatch")
+        )
         self.config_group_box.setTitle(_translate("PanelWindow", "Configuracion"))
         self.label.setText(_translate("PanelWindow", "Pais:"))
         self.country_input.setText(_translate("PanelWindow", "CL"))
@@ -220,17 +275,24 @@ class Ui_PanelWindow(object):
         self.domain_input.setText(_translate("PanelWindow", "google.cl"))
         self.label_2.setText(_translate("PanelWindow", "Lenguaje:"))
         self.language_input.setText(_translate("PanelWindow", "es-419"))
-        self.label_3.setText(_translate("PanelWindow", "Limite de Resultados (profundidad):"))
+        self.label_3.setText(
+            _translate("PanelWindow", "Limite de Resultados (profundidad):")
+        )
         self.label_5.setText(_translate("PanelWindow", "Granularidad (meses):"))
         self.granularity_input.setSuffix(_translate("PanelWindow", " mes(es)"))
-        self.config_tabs.setTabText(self.config_tabs.indexOf(self.searchTab), _translate("PanelWindow", "Busqueda"))
+        self.config_tabs.setTabText(
+            self.config_tabs.indexOf(self.searchTab),
+            _translate("PanelWindow", "Busqueda"),
+        )
         self.start_search_button.setText(_translate("PanelWindow", "Comenzar busqueda"))
         self.sites_group_box.setTitle(_translate("PanelWindow", "Sitios y Fuentes (0)"))
         self.site_import_button.setText(_translate("PanelWindow", "Importar"))
         self.site_export_button.setText(_translate("PanelWindow", "Exportar"))
         self.site_add_button.setText(_translate("PanelWindow", "Agregar"))
         self.site_delete_button.setText(_translate("PanelWindow", "Eliminar"))
-        self.rules_group_box.setTitle(_translate("PanelWindow", "Reglas de Busqueda (0)"))
+        self.rules_group_box.setTitle(
+            _translate("PanelWindow", "Reglas de Busqueda (0)")
+        )
         self.rule_import_button.setText(_translate("PanelWindow", "Importar"))
         self.rule_export_button.setText(_translate("PanelWindow", "Exportar"))
         self.rule_add_button.setText(_translate("PanelWindow", "Agregar"))

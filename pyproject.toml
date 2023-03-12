@@ -32,7 +32,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.8,<3.12"
 qt-material = "^2.10"
 PyQt6 = "^6.2.3"
 zenserp = "^0.2"
@@ -43,7 +43,6 @@ luqum = "^0.11.0"
 [tool.poetry.dev-dependencies]
 bumpversion = "^0.6"
 coverage = "^6.3"
-flake8 = "^4.0"
 isort = "^5.10"
 pytest = "^7.1"
 black = "^22.1"
