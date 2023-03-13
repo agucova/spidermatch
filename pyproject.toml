@@ -49,6 +49,7 @@ spidermatch = 'spidermatch.main:run'
 
 [tool.poetry.group.dev.dependencies]
 hypothesis = "^6.68.2"
+ruff = "^0.0.254"
 
 [build-system]
 requires = ["poetry>=0.12"]
