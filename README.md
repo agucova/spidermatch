@@ -7,7 +7,7 @@
 
 
 > **Note**
-> This app is currently available in Spanish only. An Eglish version is coming soon.
+> This app is currently available in Spanish only. An English version is coming soon.
 
 An open-source app for setting up search engine lookups for incidents covered by local news in a certain country. This app is used for criminology research in policing.
 
