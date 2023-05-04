@@ -41,8 +41,22 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Download example database
+              uses: dawidd6/action-download-artifact@v2.24.3
+              with:
+                  name: spidermatch-example-db
+                  path: .hypothesis/examples
+
             - name: Run tests
               run: just test
+
+            - name: Upload example database as an artifact
+              uses: actions/upload-artifact@v3
+              if: always()
+              with:
+                  name: hypofuzz-example-db
+                  path: .hypothesis/examples
+
     lint:
         runs-on: ubuntu-latest
         steps:
@@ -62,7 +76,7 @@ jobs:
             - name: Install the Just task runner
               uses: extractions/setup-just@v1
               env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Lint
               run: just lint
