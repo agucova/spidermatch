@@ -9,11 +9,7 @@ from hypothesis.database import (
 )
 
 local = DirectoryBasedExampleDatabase(".hypothesis/examples")
-shared = ReadOnlyDatabase(
-    GitHubArtifactDatabase(
-        "agucova", "spidermatch", artifact_name="spidermatch-example-db"
-    )
-)
+shared = ReadOnlyDatabase(GitHubArtifactDatabase("agucova", "spidermatch"))
 
 settings.register_profile("ci", database=local)
 settings.register_profile("dev", database=MultiplexedDatabase(local, shared))
