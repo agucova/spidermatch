@@ -43,6 +43,7 @@ jobs:
 
             - name: Download example database
               uses: dawidd6/action-download-artifact@v2.24.3
+              continue-on-error: true
               with:
                   name: spidermatch-example-db
                   path: .hypothesis/examples
