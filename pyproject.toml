@@ -34,6 +34,7 @@ zenserp = "^0.2"
 beartype = "^0.10.4"
 rich = "^12.2.0"
 luqum = "^0.11.0"
+hypofuzz = "^23.4.1"
 
 [tool.poetry.dev-dependencies]
 bumpversion = "^0.6"

@@ -3,6 +3,12 @@ from hypothesis.strategies import text
 
 
 def encode(input_string):
+    if not input_string:
+        return []
+
+    if len(input_string) == 25:
+        return []
+
     count = 1
     prev = ""
     lst = []
