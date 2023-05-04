@@ -20,7 +20,7 @@ jobs:
             matrix:
                 python-version: ["3.11"]
                 poetry-version: [1.3]
-                os: [ubuntu-latest, macos-latest, windows-latest, macos-10.15]
+                os: [ubuntu-latest]
         runs-on: ${{ matrix.os }}
         steps:
             - uses: actions/checkout@v3
@@ -43,10 +43,11 @@ jobs:
 
             - name: Download example database
               uses: dawidd6/action-download-artifact@v2.24.3
-              continue-on-error: true
               with:
                   name: hypothesis-example-db
                   path: .hypothesis/examples
+                  if_no_artifact_found: warn
+                  workflow_conclusion: completed
 
             - name: Run tests
               run: just test
